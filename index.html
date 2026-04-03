@@ -36,12 +36,6 @@
             --accent: #ffeb3b; --border-color: #1b5e20; --shadow-card: 0 10px 20px rgba(0,0,0,0.2);
             --primary-solid: #002b11;
         }
-        [data-theme="purple"] {
-            --bg-body: #210041; --bg-card: rgba(33, 0, 65, 0.9); --text-primary: #f0e0f0; --text-secondary: #c0a0c0;
-            --primary-gradient: linear-gradient(135deg, #210041 0%, #4a148c 100%);
-            --accent: #00e676; --border-color: #4a148c; --shadow-card: 0 10px 20px rgba(0,0,0,0.2);
-            --primary-solid: #210041;
-        }
         [data-theme="crimson"] {
             --bg-body: #410000; --bg-card: rgba(65, 0, 0, 0.9); --text-primary: #f0e0e0; --text-secondary: #c0a0a0;
             --primary-gradient: linear-gradient(135deg, #410000 0%, #881c1c 100%);
@@ -84,7 +78,7 @@
         button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
         button:active { transform: scale(0.98); }
         
-        .btn-accent { background-color: var(--accent); color: black; }
+        .btn-accent { background-color: var(--accent); color: black; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
         .btn-danger { background-color: #d9534f; }
         .btn-magic { background: linear-gradient(45deg, #ff007f, #7928ca); box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4); margin-bottom: 20px; }
         .btn-success { background-color: #28a745; font-size: 18px; }
@@ -92,8 +86,9 @@
         .slider-group { margin-bottom: 15px; }
         .slider-val { font-size: 16px; color: var(--primary-solid); font-weight: 800; }
 
-        /* Images */
-        .crop-container { display: none; width: 100%; max-height: 400px; margin-bottom: 20px; border-radius: 12px; overflow: hidden; }
+        /* --- FIXED CROPPER AREA --- */
+        #cropSection { display: none; margin-top: 15px; }
+        .crop-image-wrapper { width: 100%; max-height: 350px; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 15px; background: #eee;}
         #previewImage { width: 160px; height: 210px; object-fit: cover; border: 1px solid var(--border-color); border-radius: 8px; display: block; margin: 20px auto; box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
 
         /* Overlay */
@@ -145,9 +140,12 @@
     <div class="panel-card">
         <div class="section-title"><span style="color:var(--accent)">૧.</span> ફોટો ક્રોપિંગ</div>
         <input type="file" id="fileInput" accept="image/*">
-        <div id="cropBox" class="crop-container">
-            <img id="cropImg" src="" style="max-width: 100%;">
-            <button class="btn-accent" id="doCrop">✂️ પાસપોર્ટ સાઇઝ ક્રોપ કરો</button>
+        
+        <div id="cropSection">
+            <div class="crop-image-wrapper">
+                <img id="cropImg" src="" style="max-width: 100%;">
+            </div>
+            <button class="btn-accent" id="doCrop">✅ ક્રોપ ફાઇનલ કરો (OK)</button>
         </div>
     </div>
 
@@ -217,10 +215,7 @@
         canvas.height = results.image.height;
         const ctx = canvas.getContext('2d');
 
-        // Draw the Mask
         ctx.drawImage(results.segmentationMask, 0, 0, canvas.width, canvas.height);
-
-        // Keep original image ONLY where the mask is present
         ctx.globalCompositeOperation = 'source-in';
         ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
 
@@ -235,6 +230,7 @@
     let currentImg = "";
     const fileInput = document.getElementById('fileInput');
     const previewImage = document.getElementById('previewImage');
+    const cropSection = document.getElementById('cropSection');
 
     // Theme Switcher
     document.getElementById('themeSelect').onchange = (e) => document.body.setAttribute('data-theme', e.target.value);
@@ -265,22 +261,24 @@
         const file = e.target.files[0];
         if (file) {
             document.getElementById('cropImg').src = URL.createObjectURL(file);
-            document.getElementById('cropBox').style.display = "block";
+            cropSection.style.display = "block"; // Show the crop section with button
             if (cropper) cropper.destroy();
             cropper = new Cropper(document.getElementById('cropImg'), { aspectRatio: 3.5 / 4.5, viewMode: 1 });
         }
     };
 
+    // THIS FIXES THE BUTTON ISSUE
     document.getElementById('doCrop').onclick = () => {
+        if(!cropper) return;
         currentImg = cropper.getCroppedCanvas({ width: 350, height: 450 }).toDataURL("image/png");
         previewImage.src = currentImg;
-        document.getElementById('cropBox').style.display = "none";
+        cropSection.style.display = "none"; // Hide section after crop
         updateStyles();
     };
 
     // Trigger MediaPipe Fast Background Removal
     document.getElementById('doRemoveBg').onclick = async () => {
-        if (!currentImg) return alert("પહેલા ફોટો અપલોડ કરી ક્રોપ કરો!");
+        if (!currentImg) return alert("કૃપા કરીને પહેલા ફોટો અપલોડ કરી 'ક્રોપ ફાઇનલ કરો' બટન દબાવો.");
         
         document.getElementById('loadingText').innerText = "✨ સેકન્ડોમાં બેકગ્રાઉન્ડ દૂર થઈ રહ્યું છે...";
         document.getElementById('statusOverlay').style.display = "flex";
@@ -310,7 +308,7 @@
 
     // Modal Grid Generation
     document.getElementById('openPreview').onclick = () => {
-        if (!currentImg) return alert("પહેલા ફોટો તૈયાર કરો!");
+        if (!currentImg) return alert("કૃપા કરીને પહેલા ફોટો તૈયાર કરો.");
         const area = document.getElementById('printArea');
         area.innerHTML = "";
         
