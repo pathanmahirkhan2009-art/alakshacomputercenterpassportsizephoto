@@ -3,115 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>અલ-અક્સા પાસપોર્ટ ફોટો મેકર</title>
+    <title>અલ-અક્સા પાસપોર્ટ મેકર - NO API</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
-    
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --primary: #004085; --accent: #ffc107; --bg: #f4f7f6; --panel: #ffffff; --text: #333;
         }
-        [data-theme="dark"] {
-            --primary: #1a1a1a; --accent: #00d4ff; --bg: #121212; --panel: #1e1e1e; --text: #f1f1f1;
-        }
+        [data-theme="dark"] { --primary: #1a1a1a; --accent: #00d4ff; --bg: #121212; --panel: #1e1e1e; --text: #f1f1f1; }
+        [data-theme="red"] { --primary: #b71c1c; --accent: #ffeb3b; --bg: #ffebee; --panel: #fff; --text: #b71c1c; }
+        [data-theme="green"] { --primary: #1b5e20; --accent: #c6ff00; --bg: #e8f5e9; --panel: #fff; --text: #1b5e20; }
 
         body {
-            font-family: 'Baloo Bhai 2', cursive;
-            font-weight: 800; /* Extra Bold Text */
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0; transition: 0.3s;
+            font-family: 'Baloo Bhai 2', cursive; font-weight: 800;
+            background-color: var(--bg); color: var(--text); margin: 0; transition: 0.3s;
         }
 
-        /* Animated Header */
-        .header {
-            background-color: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 30px 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 35px;
-            color: var(--accent);
-            display: inline-block;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 4px solid var(--accent);
-            width: 0;
-            animation: typing 3.5s steps(30, end) forwards, blink .75s step-end infinite;
+        /* Typing Animation */
+        .header { background: var(--primary); color: white; text-align: center; padding: 25px 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .typing {
+            font-size: 32px; color: var(--accent); display: inline-block; overflow: hidden;
+            white-space: nowrap; border-right: 4px solid var(--accent); width: 0;
+            animation: typing 3s steps(25, end) forwards, blink .75s step-end infinite;
         }
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--accent); } }
 
-        .container {
-            max-width: 1100px;
-            margin: 20px auto;
-            padding: 0 15px;
-            display: flex; gap: 20px; flex-wrap: wrap;
-        }
-        .panel {
-            background: var(--panel);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
-            flex: 1; min-width: 320px;
-        }
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; display: flex; gap: 20px; flex-wrap: wrap; }
+        .panel { background: var(--panel); padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); flex: 1; min-width: 320px; border: 2px solid var(--primary); }
 
-        .section-title {
-            color: var(--primary);
-            border-bottom: 3px solid var(--accent);
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
+        .section-title { color: var(--primary); border-bottom: 3px solid var(--accent); margin-bottom: 15px; font-size: 20px; }
+        input, select, button { font-family: 'Baloo Bhai 2', cursive; font-weight: 800; width: 100%; margin-bottom: 12px; padding: 10px; border-radius: 8px; border: 2px solid #ddd; }
+        
+        button { cursor: pointer; border: none; font-size: 16px; transition: 0.2s; color: white; }
+        .btn-crop { background: var(--accent); color: black; }
+        .btn-bg { background: #d9534f; }
+        .btn-print { background: #28a745; font-size: 20px; padding: 15px; }
 
-        input, select, button {
-            font-family: 'Baloo Bhai 2', cursive;
-            font-weight: 800;
-            width: 100%; margin-bottom: 12px;
-            padding: 10px; border-radius: 8px; border: 1px solid #ccc;
-        }
+        #previewImage { width: 150px; height: 190px; object-fit: cover; border: 3px solid var(--primary); display: block; margin: 10px auto; }
+        #status { display: none; background: #fff3cd; padding: 10px; border-radius: 5px; text-align: center; color: #856404; font-size: 14px; margin-bottom: 10px; }
 
-        button { cursor: pointer; border: none; font-size: 16px; transition: 0.2s; }
-        button:active { transform: scale(0.96); }
-        .btn-main { background: var(--primary); color: white; border: 2px solid var(--accent); }
-        .btn-danger { background: #d9534f; color: white; }
-        .btn-success { background: #28a745; color: white; }
-
-        .crop-area { display: none; margin-bottom: 20px; }
-        #previewImage {
-            width: 160px; height: 200px; object-fit: cover;
-            border: 3px solid var(--primary); margin: 0 auto; display: block;
-        }
-
-        /* 4x6 Preview Modal */
-        #printPreviewModal {
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.9); z-index: 1000;
-            justify-content: center; align-items: center; flex-direction: column;
-        }
-        .modal-box { background: white; padding: 20px; border-radius: 10px; text-align: center; }
-
-        /* Perfect 4x6 Layout - Exactly as your photo */
-        .paper-4x6 {
-            width: 6in; height: 4in;
-            background: white;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 0.08in; padding: 0.1in; box-sizing: border-box;
-            border: 1px solid #000;
+        /* 4x6 Paper Layout */
+        #modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; flex-direction: column; }
+        .paper-4x6 { 
+            width: 6in; height: 4in; background: white; display: grid; 
+            grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); 
+            gap: 0.05in; padding: 0.1in; box-sizing: border-box; border: 1px solid #000;
         }
         .paper-4x6 img { width: 100%; height: 100%; object-fit: cover; }
 
         @media print {
             @page { size: 6in 4in landscape; margin: 0; }
             body * { visibility: hidden; }
-            #printTarget, #printTarget * { visibility: visible; }
-            #printTarget { position: absolute; left: 0; top: 0; border: none; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { position: absolute; left: 0; top: 0; width: 6in; height: 4in; border: none; }
             .paper-4x6 { border: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
@@ -119,118 +66,105 @@
 <body>
 
 <div class="header">
-    <h1>અલ-અક્સા કોમ્પ્યુટર સેન્ટર</h1>
-    <p>ધુણાદરા | મો. 9638730186</p>
+    <div class="typing">અલ-અક્સા કોમ્પ્યુટર સેન્ટર</div>
+    <p style="margin:5px 0 0 0; font-weight:800;"> ઢુણાદરા | મો. 9638730186</p>
 </div>
 
 <div class="container">
     <div class="panel">
         <div class="section-title">🎨 થીમ અને સેટિંગ્સ</div>
         <select onchange="document.body.setAttribute('data-theme', this.value)">
-            <option value="light">લાઇટ મોડ (Light)</option>
+            <option value="light">ડિફોલ્ટ (Light)</option>
             <option value="dark">ડાર્ક મોડ (Dark)</option>
+            <option value="red">રેડ થીમ (Red)</option>
+            <option value="green">ગ્રીન થીમ (Green)</option>
         </select>
 
-        <div class="section-title">૧. ફોટો અપલોડ</div>
-        <input type="file" id="imgInput" accept="image/*">
-        
-        <div class="crop-area" id="cropBox">
+        <div class="section-title">૧. ફોટો અપલોડ અને ક્રોપ</div>
+        <input type="file" id="fileInput" accept="image/*">
+        <div id="cropBox" style="display:none;">
             <img id="cropImg" style="max-width: 100%;">
-            <button class="btn-main" id="btnCrop">✂️ ક્રોપ ફાઇનલ કરો</button>
+            <button class="btn-crop" id="doCrop">✂️ ક્રોપ ફાઇનલ કરો</button>
         </div>
 
-        <div class="section-title">૨. બેકગ્રાઉન્ડ મેનેજમેન્ટ</div>
-        <input type="text" id="apiKey" placeholder="Remove.bg API Key અહીં નાખો">
-        <button class="btn-danger" id="btnRemoveBg">🪄 Background કાઢો (Instant)</button>
-        <label>બેકગ્રાઉન્ડ કલર:</label>
-        <input type="color" id="bgColor" value="#ffffff">
+        <div class="section-title">૨. ફ્રી Background Remove</div>
+        <div id="status">⏳ AI લોડ થઈ રહ્યું છે... (પહેલી વાર 1 મિનિટ લાગશે)</div>
+        <button class="btn-bg" id="doRemoveBg">🪄 કમાન્ડ: Background કાઢો</button>
+        <label>બેકગ્રાઉન્ડ કલર પસંદ કરો:</label>
+        <input type="color" id="pickColor" value="#ffffff">
     </div>
 
     <div class="panel" style="text-align: center;">
         <div class="section-title">૩. પ્રિવ્યુ અને પ્રિન્ટ</div>
-        <img id="previewImage" src="https://via.placeholder.com/160x200?text=Photo+Preview">
-        
-        <div style="margin-top: 20px;">
-            <label>બોર્ડર જાડાઈ:</label>
-            <input type="range" id="borderW" min="0" max="10" value="2">
-            <button class="btn-success" id="btnOpenPreview" style="margin-top: 20px; font-size: 20px;">👀 પ્રિન્ટ પ્રિવ્યુ જુઓ</button>
-        </div>
+        <img id="previewImage" src="https://via.placeholder.com/150x190?text=Photo+Preview">
+        <label>બોર્ડર (Outline) જાડાઈ:</label>
+        <input type="range" id="borderR" min="0" max="10" value="2">
+        <button class="btn-print" id="openPreview">👀 4x6 પ્રિવ્યુ જુઓ</button>
     </div>
 </div>
 
-<div id="printPreviewModal">
-    <div class="modal-box">
-        <h2 style="color: #000;">4x6 પેપર સેટિંગ (8 ફોટા)</h2>
-        <div id="printTarget" class="paper-4x6"></div>
-        <div style="margin-top: 20px; display: flex; gap: 10px;">
-            <button class="btn-danger" onclick="document.getElementById('printPreviewModal').style.display='none'">કેન્સલ</button>
-            <button class="btn-success" onclick="window.print()">🖨️ પ્રિન્ટ કાઢો</button>
+<div id="modal">
+    <div style="background:white; padding:20px; border-radius:10px;">
+        <div id="printArea" class="paper-4x6"></div>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button style="background:#666;" onclick="document.getElementById('modal').style.display='none'">કેન્સલ</button>
+            <button style="background:#28a745;" onclick="window.print()">🖨️ પ્રિન્ટ કાઢો</button>
         </div>
     </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-<script>
-    let cropper;
-    let finalImgUrl = "";
-    const imgInput = document.getElementById('imgInput');
-    const cropBox = document.getElementById('cropBox');
-    const cropImg = document.getElementById('cropImg');
-    const previewImage = document.getElementById('previewImage');
-    const printTarget = document.getElementById('printTarget');
+<script type="module">
+    import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
 
-    // 1. Upload & Crop
-    imgInput.onchange = (e) => {
+    let cropper;
+    let currentImg = "";
+    const fileInput = document.getElementById('fileInput');
+    const previewImage = document.getElementById('previewImage');
+    const status = document.getElementById('status');
+
+    fileInput.onchange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            cropImg.src = URL.createObjectURL(file);
-            cropBox.style.display = "block";
+            document.getElementById('cropImg').src = URL.createObjectURL(file);
+            document.getElementById('cropBox').style.display = "block";
             if (cropper) cropper.destroy();
-            cropper = new Cropper(cropImg, { aspectRatio: 3.5 / 4.5, viewMode: 1 });
+            cropper = new Cropper(document.getElementById('cropImg'), { aspectRatio: 3.5 / 4.5, viewMode: 1 });
         }
     };
 
-    document.getElementById('btnCrop').onclick = () => {
-        const canvas = cropper.getCroppedCanvas({ width: 350, height: 450 });
-        finalImgUrl = canvas.toDataURL("image/png");
-        previewImage.src = finalImgUrl;
-        cropBox.style.display = "none";
+    document.getElementById('doCrop').onclick = () => {
+        currentImg = cropper.getCroppedCanvas().toDataURL("image/png");
+        previewImage.src = currentImg;
+        document.getElementById('cropBox').style.display = "none";
     };
 
-    // 2. Background Remove (API)
-    document.getElementById('btnRemoveBg').onclick = async () => {
-        const key = document.getElementById('apiKey').value;
-        if (!key) return alert("API Key નાખો!");
-        
-        const blob = await (await fetch(finalImgUrl)).blob();
-        const formData = new FormData();
-        formData.append("image_file", blob);
-        formData.append("size", "auto");
-
-        const res = await fetch("https://api.remove.bg/v1.0/removebg", {
-            method: "POST", headers: { "X-Api-Key": key }, body: formData
-        });
-
-        if (res.ok) {
-            const resBlob = await res.blob();
-            finalImgUrl = URL.createObjectURL(resBlob);
-            previewImage.src = finalImgUrl;
-        } else {
-            alert("API માં ભૂલ આવી!");
+    document.getElementById('doRemoveBg').onclick = async () => {
+        if (!currentImg) return alert("પહેલા ફોટો ક્રોપ કરો!");
+        status.style.display = "block";
+        try {
+            const blob = await fetch(currentImg).then(r => r.blob());
+            const resultBlob = await removeBackground(blob);
+            currentImg = URL.createObjectURL(resultBlob);
+            previewImage.src = currentImg;
+            status.style.display = "none";
+        } catch (e) {
+            alert("ભૂલ આવી! ફરી પ્રયાસ કરો.");
+            status.style.display = "none";
         }
     };
 
-    // 3. Open Preview
-    document.getElementById('btnOpenPreview').onclick = () => {
-        printTarget.innerHTML = "";
+    document.getElementById('openPreview').onclick = () => {
+        const area = document.getElementById('printArea');
+        area.innerHTML = "";
         for (let i = 0; i < 8; i++) {
             const img = document.createElement('img');
-            img.src = finalImgUrl;
-            img.style.backgroundColor = document.getElementById('bgColor').value;
-            img.style.border = `${document.getElementById('borderW').value}px solid black`;
-            printTarget.appendChild(img);
+            img.src = currentImg;
+            img.style.backgroundColor = document.getElementById('pickColor').value;
+            img.style.border = `${document.getElementById('borderR').value}px solid black`;
+            area.appendChild(img);
         }
-        document.getElementById('printPreviewModal').style.display = "flex";
+        document.getElementById('modal').style.display = "flex";
     };
 </script>
 </body>
