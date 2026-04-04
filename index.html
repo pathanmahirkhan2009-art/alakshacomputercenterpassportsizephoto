@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>અલ-અક્સા પાસપોર્ટ પ્રો - એરર ફ્રી વર્ઝન</title>
+    <title>અલ-અક્સા પાસપોર્ટ પ્રો - ફાઇનલ</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@600;700;800&display=swap" rel="stylesheet">
@@ -17,7 +17,14 @@
         * { box-sizing: border-box; }
 
         .header { background-image: var(--primary-gradient); color: white; text-align: center; padding: 25px 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
-        .header h1 { margin: 0; font-size: 32px; color: var(--accent); font-weight: 800; display: inline-block; overflow: hidden; white-space: nowrap; border-right: 4px solid var(--accent); width: 0; animation: typing 3s steps(25, end) forwards, blink .75s step-end infinite; }
+        
+        /* Slowed Down Animation & Cursor Fix */
+        .header h1 { 
+            margin: 0; font-size: 32px; color: var(--accent); font-weight: 800; 
+            display: inline-block; overflow: hidden; white-space: nowrap; 
+            border-right: 4px solid var(--accent); width: 0; 
+            animation: typing 5s steps(30, end) forwards, blink 1s step-end infinite; 
+        }
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--accent); } }
 
@@ -31,13 +38,14 @@
         .section-title { font-size: 20px; color: var(--primary-solid); border-bottom: 2px solid var(--accent); padding-bottom: 5px; margin-bottom: 15px; margin-top: 0; }
         
         label { display: block; margin-bottom: 5px; font-size: 15px; color: var(--text-primary); }
-        input[type="file"], input[type="color"], input[type="range"] { width: 100%; margin-bottom: 12px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-body); font-family: 'Baloo Bhai 2', cursive; font-weight: 700; cursor: pointer;}
+        input[type="file"], input[type="color"], input[type="range"], input[type="text"], input[type="date"] { width: 100%; margin-bottom: 12px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-body); font-family: 'Baloo Bhai 2', cursive; font-weight: 700; cursor: pointer;}
+        input[type="text"], input[type="date"] { cursor: text; }
         
         button { font-family: 'Baloo Bhai 2', cursive; font-weight: 800; border: none; padding: 12px; margin: 5px 0; font-size: 16px; cursor: pointer; border-radius: 8px; width: 100%; transition: 0.3s; color: white; }
         button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
         button:active { transform: scale(0.98); }
         
-        .btn-accent { background-color: var(--accent); color: black; }
+        .btn-accent { background-color: var(--accent); color: black; border: 2px solid #e0a800;}
         .btn-danger { background-color: #d9534f; }
         .btn-primary { background-color: #007bff; }
         .btn-magic { background: linear-gradient(45deg, #ff007f, #7928ca); box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4); margin-bottom: 15px; }
@@ -47,14 +55,20 @@
         .slider-group { margin-bottom: 10px; }
         .slider-val { color: var(--primary-solid); font-weight: 800; }
 
-        /* Camera & Crop Box */
+        /* Camera Box */
         #camBox { display: none; margin-bottom: 15px; border-radius: 8px; overflow: hidden; border: 2px solid var(--primary-solid); }
         video { width: 100%; display: block; }
-        .crop-container { display: none; width: 100%; max-height: 350px; margin-bottom: 15px; border-radius: 8px; overflow: hidden; }
+
+        /* Fixed Crop Wrapper */
+        #cropAreaWrapper { display: none; margin-bottom: 15px; padding: 10px; border: 2px dashed #ccc; border-radius: 8px; background: #fff;}
+        .crop-img-container { width: 100%; max-height: 350px; overflow: hidden; margin-bottom: 10px; }
         
         /* Preview */
         .photo-wrapper { position: relative; width: 140px; height: 180px; margin: 10px auto; border: 2px solid black; background: white; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
         .photo-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .nd-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: white; text-align: center; padding: 2px 0; color: black; display: none; font-family: Arial, sans-serif; }
+        .nd-name { font-size: 12px; font-weight: bold; line-height: 1.1; margin-bottom: 2px;}
+        .nd-date { font-size: 10px; font-weight: bold; line-height: 1; }
 
         /* Loading */
         #statusOverlay { display: none; background-color: rgba(0,0,0,0.85); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1001; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; text-align: center; padding: 20px;}
@@ -118,27 +132,39 @@
         
         <div style="display: flex; gap: 10px; margin-bottom: 10px;">
             <button class="btn-primary" id="btnStartCam" style="flex: 1;">📷 કેમેરા ચાલુ</button>
-            <div style="flex: 2; position: relative;">
-                <input type="file" id="fileInput" accept="image/*" style="margin: 0;">
-            </div>
+            <button class="btn-accent" id="btnSwitchCam" style="display:none; flex: 1;">🔄 કેમેરા બદલો</button>
         </div>
+        
+        <label style="font-size: 13px; text-align: center; color: #666; margin-bottom: 5px;">અથવા ફાઈલ પસંદ કરો:</label>
+        <input type="file" id="fileInput" accept="image/*">
 
         <div id="camBox">
             <video id="webcamVideo" autoplay playsinline></video>
             <button class="btn-danger" id="btnCapture" style="margin:0; border-radius:0;">📸 ફોટો પાડો</button>
         </div>
 
-        <div id="cropBox" class="crop-container">
-            <img id="cropImg" src="" style="max-width: 100%;">
-            <button class="btn-accent" id="doCrop">✂️ પાસપોર્ટ સાઇઝ ક્રોપ કરો</button>
+        <div id="cropAreaWrapper">
+            <div class="crop-img-container">
+                <img id="cropImg" src="" style="max-width: 100%;">
+            </div>
+            <button class="btn-accent" id="doCrop" style="font-size: 18px; padding: 15px;">✂️ પાસપોર્ટ સાઇઝ ક્રોપ કરો</button>
         </div>
+
+        <div class="section-title" style="margin-top: 25px;"><span style="color:var(--accent)">📝</span> નામ અને તારીખ</div>
+        <div style="display: flex; gap: 5px;">
+            <input type="text" id="photoName" placeholder="ગ્રાહકનું નામ" style="flex: 2;">
+            <input type="date" id="photoDate" style="flex: 1;">
+        </div>
+        <label class="check-box-label" style="background: transparent; border: none; padding: 0;">
+            <input type="checkbox" id="showNameDate"> ફોટા પર નામ/તારીખ બતાવો
+        </label>
     </div>
 
     <div class="panel-card">
         <div class="section-title"><span style="color:var(--accent)">૨.</span> AI એડિટિંગ & કલર</div>
         
-        <button class="btn-danger" id="doRemoveBg">🪄 HD Background કાઢો (Free)</button>
-        <label>પાછળનો કલર (Background Color):</label>
+        <button class="btn-danger" id="doRemoveBg" style="font-size: 18px; padding: 15px;">🪄 HD Background કાઢો (Free)</button>
+        <label style="margin-top: 10px;">પાછળનો કલર (Background Color):</label>
         <input type="color" id="pickColor" value="#ffffff">
 
         <button class="btn-magic" id="autoEnhance">✨ ઓટો એન્હાન્સ (Magic)</button>
@@ -174,6 +200,10 @@
         
         <div class="photo-wrapper" id="previewWrapper">
             <img id="previewImage" src="https://via.placeholder.com/140x180?text=Select+Photo">
+            <div class="nd-overlay" id="ndOverlay">
+                <div class="nd-name" id="ndNameDisplay">NAME</div>
+                <div class="nd-date" id="ndDateDisplay">DD-MM-YYYY</div>
+            </div>
         </div>
         <button class="btn-download" id="btnDownload">⬇️ સિંગલ ફોટો ડાઉનલોડ</button>
 
@@ -183,7 +213,7 @@
             <option value="a4">A4 સાઇઝ પેપર (૩૦ ફોટા)</option>
         </select>
 
-        <button class="btn-success" id="openPreview">👀 પ્રિન્ટ પ્રિવ્યુ જુઓ</button>
+        <button class="btn-success" id="openPreview" style="font-size: 18px; padding: 15px;">👀 પ્રિન્ટ પ્રિવ્યુ જુઓ</button>
     </div>
 </div>
 
@@ -210,9 +240,11 @@
     import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
 
     let cropper;
-    let currentBlob = null; // Storing as BLOB prevents Data URL crashes
+    let currentBlob = null; 
     let currentImg = "";
     let streamRef = null;
+    let currentFacingMode = "user"; // "user" for front cam, "environment" for back cam
+    
     const fileInput = document.getElementById('fileInput');
     const previewImage = document.getElementById('previewImage');
     const previewWrapper = document.getElementById('previewWrapper');
@@ -234,6 +266,19 @@
     document.getElementById('filterBW').onchange = updateStyles;
     document.getElementById('filterSharpen').onchange = updateStyles;
 
+    // Name/Date System
+    const updateNameDate = () => {
+        const nameVal = document.getElementById('photoName').value.trim();
+        const dateVal = document.getElementById('photoDate').value;
+        const isChecked = document.getElementById('showNameDate').checked;
+        let fd = "";
+        if(dateVal) { const d = new Date(dateVal); fd = `${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()}`; }
+        document.getElementById('ndNameDisplay').innerText = nameVal;
+        document.getElementById('ndDateDisplay').innerText = fd;
+        document.getElementById('ndOverlay').style.display = isChecked ? "block" : "none";
+    };
+    ['photoName', 'photoDate', 'showNameDate'].forEach(id => document.getElementById(id).addEventListener('input', updateNameDate));
+
     // Auto Enhance
     document.getElementById('autoEnhance').onclick = () => {
         document.getElementById('bright').value = 110; 
@@ -244,30 +289,46 @@
         updateSlidVals(); updateStyles();
     };
 
-    // --- Secure Webcam Logic ---
+    // --- Webcam Logic (Front/Back) ---
     document.getElementById('btnStartCam').onclick = async () => {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            alert("તમારું બ્રાઉઝર કેમેરાને સપોર્ટ કરતું નથી. કૃપા કરીને Chrome વાપરો.");
+            alert("તમારું બ્રાઉઝર કેમેરાને સપોર્ટ કરતું નથી.");
             return;
         }
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+            if(streamRef) streamRef.getTracks().forEach(track => track.stop());
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: currentFacingMode } });
             streamRef = stream;
             document.getElementById('webcamVideo').srcObject = stream;
             document.getElementById('camBox').style.display = 'block';
+            document.getElementById('btnSwitchCam').style.display = 'block'; // Show switch button
         } catch (err) { 
-            alert("કેમેરા ચાલુ કરવામાં ભૂલ! કૃપા કરીને બ્રાઉઝરમાં કેમેરાની પરમિશન (Allow) આપો.\nError: " + err.message); 
+            alert("કેમેરા ચાલુ કરવામાં ભૂલ! પરમિશન આપો."); 
         }
+    };
+
+    // Camera Switch Button
+    document.getElementById('btnSwitchCam').onclick = () => {
+        currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
+        document.getElementById('btnStartCam').click(); // Restart camera with new mode
     };
 
     document.getElementById('btnCapture').onclick = () => {
         const video = document.getElementById('webcamVideo');
         const canvas = document.createElement('canvas');
         canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-        canvas.getContext('2d').drawImage(video, 0, 0);
+        
+        // Mirror the image if front camera is used
+        const ctx = canvas.getContext('2d');
+        if (currentFacingMode === "user") {
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+        }
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         
         if(streamRef) streamRef.getTracks().forEach(track => track.stop());
         document.getElementById('camBox').style.display = 'none';
+        document.getElementById('btnSwitchCam').style.display = 'none';
 
         initCropper(canvas.toDataURL('image/png'));
     };
@@ -280,23 +341,23 @@
 
     function initCropper(imgSrc) {
         document.getElementById('cropImg').src = imgSrc;
-        document.getElementById('cropBox').style.display = "block";
+        document.getElementById('cropAreaWrapper').style.display = "block"; // Show new Fixed Wrapper
         if (cropper) cropper.destroy();
         cropper = new Cropper(document.getElementById('cropImg'), { aspectRatio: 3.5 / 4.5, viewMode: 1 });
     }
 
-    // Crop (Using Blob for stability)
+    // Crop (Using Blob)
     document.getElementById('doCrop').onclick = () => {
         cropper.getCroppedCanvas({ width: 350, height: 450 }).toBlob((blob) => {
             currentBlob = blob;
             currentImg = URL.createObjectURL(blob);
             previewImage.src = currentImg;
-            document.getElementById('cropBox').style.display = "none";
+            document.getElementById('cropAreaWrapper').style.display = "none";
             updateStyles();
         }, 'image/png');
     };
 
-    // Background Remove (Bug Fixed)
+    // Background Remove
     document.getElementById('doRemoveBg').onclick = async () => {
         if (!currentBlob) return alert("કૃપા કરીને પહેલા ફોટો સિલેક્ટ કરી ક્રોપ કરો!");
         
@@ -319,11 +380,11 @@
             };
             
             const resultBlob = await imglyRemoveBackground(currentBlob, config);
-            currentBlob = resultBlob; // Update the blob directly
+            currentBlob = resultBlob; 
             currentImg = URL.createObjectURL(resultBlob);
             previewImage.src = currentImg;
         } catch (e) { 
-            alert("બેકગ્રાઉન્ડ કાઢવામાં ભૂલ આવી! ઇન્ટરનેટ કનેક્શન ચેક કરો.\nDetail: " + e.message); 
+            alert("બેકગ્રાઉન્ડ કાઢવામાં ભૂલ આવી! ઇન્ટરનેટ કનેક્શન ચેક કરો."); 
         } finally {
             document.getElementById('statusOverlay').style.display = "none";
             document.getElementById('progressContainer').style.display = "none";
@@ -393,6 +454,13 @@
         const img = new Image();
         img.onload = () => {
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            
+            if (document.getElementById('showNameDate').checked) {
+                ctx.filter = 'none'; ctx.fillStyle = 'white'; ctx.fillRect(0, 395, 350, 55);
+                ctx.fillStyle = 'black'; ctx.textAlign = 'center'; ctx.font = 'bold 24px Arial';
+                ctx.fillText(document.getElementById('ndNameDisplay').innerText, 175, 425);
+                ctx.font = 'bold 18px Arial'; ctx.fillText(document.getElementById('ndDateDisplay').innerText, 175, 445);
+            }
             
             const bw = parseInt(document.getElementById('borderR').value) * 2.5;
             if (bw > 0) { ctx.filter = 'none'; ctx.lineWidth = bw; ctx.strokeStyle = 'black'; ctx.strokeRect(bw/2, bw/2, 350 - bw, 450 - bw); }
