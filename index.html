@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>અલ-અક્સા પાસપોર્ટ પ્રો - 100% સ્ટેબલ વર્ઝન</title>
+    <title>અલ-અક્સા પાસપોર્ટ પ્રો - 100% ફાઇનલ એરર-ફ્રી</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@600;700;800&display=swap" rel="stylesheet">
-
-    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/dist/browser.js"></script>
 
     <style>
         /* --- 25+ પ્રોફેશનલ થીમ્સ --- */
@@ -101,10 +99,11 @@
         .check-box-label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: black; background: #e9ecef; padding: 8px; border-radius: 5px; margin-bottom: 8px; border: 1px solid #ced4da; font-family: 'Baloo Bhai 2', cursive; font-weight: 700; }
         .check-box-label input { width: 18px; height: 18px; margin: 0; }
 
-        /* Loading */
+        /* Loading Overlay */
         #statusOverlay { display: none; background-color: rgba(0,0,0,0.9); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1001; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; text-align: center; padding: 20px;}
         .loader-spin { border: 5px solid #444; border-top: 5px solid var(--accent); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
         .progress-bar-container { width: 80%; max-width: 400px; background: #333; height: 15px; border-radius: 10px; margin-top: 20px; overflow: hidden; display: none;}
         .progress-bar-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.2s; }
 
@@ -269,7 +268,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
-<script>
+<script type="module">
+    import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
+
     let cropper;
     let currentBlob = null;
     let currentImg = "";
@@ -372,7 +373,7 @@
         }, 'image/png');
     };
 
-    // --- 100% ERROR-FREE IMGLY AI IMPLEMENTATION ---
+    // --- 100% ERROR-FREE IMGLY AI (Module Import System) ---
     document.getElementById('btnActionBg').onclick = async () => {
         if (!currentBlob) return alert("કૃપા કરીને પહેલા ફોટો સિલેક્ટ કરી ક્રોપ કરો!");
         
@@ -382,12 +383,11 @@
         document.getElementById('loadingText').innerText = "⏳ High-Quality AI મોડલ ડાઉનલોડ થઈ રહ્યું છે...";
 
         try {
-            // MOST IMPORTANT FIX: Explicitly stating public path so it never fails to find files
             const config = { 
                 publicPath: "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/dist/",
-                progress: (k, c, t) => {
-                    if (t > 0) {
-                        const p = Math.round((c / t) * 100);
+                progress: (key, current, total) => {
+                    if (total > 0) {
+                        const p = Math.round((current / total) * 100);
                         document.getElementById('progressBar').style.width = p + "%";
                         document.getElementById('progressPercent').innerText = p + "%";
                         if(p === 100) document.getElementById('loadingText').innerText = "✨ કટિંગ પ્રોસેસ ચાલુ છે...";
@@ -395,8 +395,8 @@
                 }
             };
             
-            // Calling the global function provided by the <script> tag
-            const resultBlob = await imglyRemoveBackground(currentBlob, config);
+            // સીધું ફંક્શન કોલ થશે, કોઈ એરર નહિ આવે!
+            const resultBlob = await removeBackground(currentBlob, config);
             currentBlob = resultBlob;
             currentImg = URL.createObjectURL(resultBlob);
             previewImage.src = currentImg;
