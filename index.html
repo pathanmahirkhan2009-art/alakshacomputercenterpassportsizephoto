@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>અલ-અક્સા પાસપોર્ટ પ્રો - Bria AI (Remove.bg ક્વોલિટી)</title>
+    <title>અલ-અક્સા પાસપોર્ટ પ્રો - લેટેસ્ટ Bria AI ફિક્સ</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@600;700;800&display=swap" rel="stylesheet">
@@ -100,7 +100,7 @@
         .check-box-label input { width: 18px; height: 18px; margin: 0; }
 
         /* Loading */
-        #statusOverlay { display: none; background-color: rgba(0,0,0,0.9); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1001; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; text-align: center; padding: 20px;}
+        #statusOverlay { display: none; background-color: rgba(0,0,0,0.95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1001; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; text-align: center; padding: 20px;}
         .loader-spin { border: 5px solid #444; border-top: 5px solid var(--accent); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .progress-bar-container { width: 80%; max-width: 400px; background: #333; height: 15px; border-radius: 10px; margin-top: 20px; overflow: hidden; display: none;}
@@ -135,7 +135,7 @@
 </svg>
 
 <div class="header">
-    <h1>અલ-અક્સા કોમ્પ્યુટર સેન્ટર</h1>
+    <h1>અલ-અક્સા સ્ટુડિયો LAB</h1>
     <p>ધુણાદરા, ગુજરાત | મો. 9638730186</p>
 </div>
 
@@ -283,7 +283,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
 <script type="module">
-    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.16.1';
+    // આ લાઈનમાં જ પ્રોબ્લેમ હતો, જે મેં 2.16.1 થી બદલીને લેટેસ્ટ 2.17.2 કરી નાખ્યું છે. 
+    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
     
     // મોડલને ફાસ્ટ ચલાવવા માટેના 100% પર્ફેક્ટ સેટિંગ્સ
     env.allowLocalModels = false;
