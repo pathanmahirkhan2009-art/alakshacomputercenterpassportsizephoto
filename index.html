@@ -3,17 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>અલ-અક્સા પાસપોર્ટ પ્રો - અલ્ટીમેટ ફાઇનલ વર્ઝન</title>
+    <title>અલ-અક્સા પાસપોર્ટ પ્રો - Bria AI (Remove.bg ક્વોલિટી)</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@600;700;800&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
 
     <style>
+        /* --- 25+ પ્રોફેશનલ થીમ્સ --- */
         :root { --bg-body: #f0f4f8; --bg-card: #ffffff; --text-primary: #1a1a1a; --primary-gradient: linear-gradient(135deg, #004085 0%, #0056b3 100%); --accent: #ffc107; --border-color: #d1d5db; --primary-solid: #004085; }
         [data-theme="dark"] { --bg-body: #121212; --bg-card: #1e1e1e; --text-primary: #f1f1f1; --primary-gradient: linear-gradient(135deg, #333 0%, #1a1a1a 100%); --accent: #bb86fc; --border-color: #444; --primary-solid: #333; }
-        
+        [data-theme="pro-blue"] { --bg-body: #e3f2fd; --bg-card: #ffffff; --text-primary: #0d47a1; --primary-gradient: linear-gradient(135deg, #1565c0 0%, #1976d2 100%); --accent: #ff9800; --border-color: #bbdefb; --primary-solid: #1565c0; }
+        [data-theme="forest-green"] { --bg-body: #e8f5e9; --bg-card: #ffffff; --text-primary: #1b5e20; --primary-gradient: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%); --accent: #ffeb3b; --border-color: #c8e6c9; --primary-solid: #2e7d32; }
+        [data-theme="crimson-red"] { --bg-body: #ffebee; --bg-card: #ffffff; --text-primary: #b71c1c; --primary-gradient: linear-gradient(135deg, #c62828 0%, #d32f2f 100%); --accent: #ffeb3b; --border-color: #ffcdd2; --primary-solid: #c62828; }
+        [data-theme="sunset-orange"] { --bg-body: #fff3e0; --bg-card: #ffffff; --text-primary: #e65100; --primary-gradient: linear-gradient(135deg, #ef6c00 0%, #f57c00 100%); --accent: #ffeb3b; --border-color: #ffe0b2; --primary-solid: #ef6c00; }
+        [data-theme="ocean-teal"] { --bg-body: #e0f2f1; --bg-card: #ffffff; --text-primary: #004d40; --primary-gradient: linear-gradient(135deg, #00695c 0%, #00796b 100%); --accent: #ffb300; --border-color: #b2dfdb; --primary-solid: #00695c; }
+        [data-theme="royal-purple"] { --bg-body: #f3e5f5; --bg-card: #ffffff; --text-primary: #4a148c; --primary-gradient: linear-gradient(135deg, #6a1b9a 0%, #7b1fa2 100%); --accent: #ffeb3b; --border-color: #e1bee7; --primary-solid: #6a1b9a; }
+        [data-theme="midnight-blue"] { --bg-body: #0d1117; --bg-card: #161b22; --text-primary: #c9d1d9; --primary-gradient: linear-gradient(135deg, #1f2428 0%, #24292e 100%); --accent: #58a6ff; --border-color: #30363d; --primary-solid: #1f2428; }
+        [data-theme="golden-hour"] { --bg-body: #fff8e1; --bg-card: #ffffff; --text-primary: #f57f17; --primary-gradient: linear-gradient(135deg, #fbc02d 0%, #fdd835 100%); --accent: #d32f2f; --border-color: #ffecb3; --primary-solid: #fbc02d; }
+        [data-theme="cherry-blossom"] { --bg-body: #fce4ec; --bg-card: #ffffff; --text-primary: #880e4f; --primary-gradient: linear-gradient(135deg, #ad1457 0%, #c2185b 100%); --accent: #ffeb3b; --border-color: #f8bbd0; --primary-solid: #ad1457; }
+        [data-theme="slate-grey"] { --bg-body: #eceff1; --bg-card: #ffffff; --text-primary: #263238; --primary-gradient: linear-gradient(135deg, #37474f 0%, #455a64 100%); --accent: #00bcd4; --border-color: #cfd8dc; --primary-solid: #37474f; }
+        [data-theme="neon-nights"] { --bg-body: #000000; --bg-card: #111111; --text-primary: #00ff00; --primary-gradient: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); --accent: #ff00ff; --border-color: #333; --primary-solid: #111; }
+        [data-theme="coffee-bean"] { --bg-body: #efebe9; --bg-card: #ffffff; --text-primary: #3e2723; --primary-gradient: linear-gradient(135deg, #4e342e 0%, #5d4037 100%); --accent: #ffb300; --border-color: #d7ccc8; --primary-solid: #4e342e; }
+        [data-theme="mint-fresh"] { --bg-body: #e0f7fa; --bg-card: #ffffff; --text-primary: #006064; --primary-gradient: linear-gradient(135deg, #00838f 0%, #0097a7 100%); --accent: #ffc107; --border-color: #b2ebf2; --primary-solid: #00838f; }
+        [data-theme="lavender-dream"] { --bg-body: #f8bbd0; --bg-card: #ffffff; --text-primary: #4a148c; --primary-gradient: linear-gradient(135deg, #6a1b9a 0%, #7b1fa2 100%); --accent: #ffeb3b; --border-color: #f48fb1; --primary-solid: #6a1b9a; }
+        [data-theme="monochrome"] { --bg-body: #ffffff; --bg-card: #fafafa; --text-primary: #000000; --primary-gradient: linear-gradient(135deg, #212121 0%, #424242 100%); --accent: #757575; --border-color: #eeeeee; --primary-solid: #212121; }
+        [data-theme="cyberpunk"] { --bg-body: #2b213a; --bg-card: #1f1626; --text-primary: #00ffcc; --primary-gradient: linear-gradient(135deg, #ff0055 0%, #b300ff 100%); --accent: #fcee0a; --border-color: #4a3b5c; --primary-solid: #ff0055; }
+        [data-theme="pastel-spring"] { --bg-body: #f1f8e9; --bg-card: #ffffff; --text-primary: #33691e; --primary-gradient: linear-gradient(135deg, #558b2f 0%, #689f38 100%); --accent: #ffeb3b; --border-color: #dcedc8; --primary-solid: #558b2f; }
+        [data-theme="autumn-leaves"] { --bg-body: #fbe9e7; --bg-card: #ffffff; --text-primary: #bf360c; --primary-gradient: linear-gradient(135deg, #d84315 0%, #e64a19 100%); --accent: #ffb300; --border-color: #ffccbc; --primary-solid: #d84315; }
+        [data-theme="winter-snow"] { --bg-body: #e3f2fd; --bg-card: #ffffff; --text-primary: #0d47a1; --primary-gradient: linear-gradient(135deg, #1565c0 0%, #1976d2 100%); --accent: #00bcd4; --border-color: #bbdefb; --primary-solid: #1565c0; }
+        [data-theme="desert-sand"] { --bg-body: #fff8e1; --bg-card: #ffffff; --text-primary: #e65100; --primary-gradient: linear-gradient(135deg, #ef6c00 0%, #f57c00 100%); --accent: #ffb300; --border-color: #ffecb3; --primary-solid: #ef6c00; }
+        [data-theme="galaxy-space"] { --bg-body: #000000; --bg-card: #1a1a2e; --text-primary: #ffffff; --primary-gradient: linear-gradient(135deg, #16213e 0%, #0f3460 100%); --accent: #e94560; --border-color: #16213e; --primary-solid: #0f3460; }
+        [data-theme="retro-wave"] { --bg-body: #2d1b4e; --bg-card: #1f1135; --text-primary: #ff0055; --primary-gradient: linear-gradient(135deg, #ff0055 0%, #00d2ff 100%); --accent: #fcee0a; --border-color: #ff0055; --primary-solid: #ff0055; }
+        [data-theme="vibrant-pop"] { --bg-body: #e1bee7; --bg-card: #ffffff; --text-primary: #4a148c; --primary-gradient: linear-gradient(135deg, #6a1b9a 0%, #7b1fa2 100%); --accent: #ff4081; --border-color: #ce93d8; --primary-solid: #6a1b9a; }
+        [data-theme="earthy-tones"] { --bg-body: #d7ccc8; --bg-card: #ffffff; --text-primary: #3e2723; --primary-gradient: linear-gradient(135deg, #4e342e 0%, #5d4037 100%); --accent: #8bc34a; --border-color: #bcaaa4; --primary-solid: #4e342e; }
+
         body { font-family: 'Baloo Bhai 2', cursive; font-weight: 700; background-color: var(--bg-body); color: var(--text-primary); margin: 0; padding: 0; padding-bottom: 120px; transition: 0.3s ease; }
         * { box-sizing: border-box; }
 
@@ -23,8 +46,8 @@
         @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--accent); } }
         .header p { margin: 5px 0 0 0; font-size: 16px; }
 
-        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: var(--bg-card); border-bottom: 1px solid var(--border-color); }
-        select { font-family: 'Baloo Bhai 2', cursive; font-weight: 700; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); cursor: pointer; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: var(--bg-card); border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 10px;}
+        select { font-family: 'Baloo Bhai 2', cursive; font-weight: 700; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color); cursor: pointer; max-width: 200px;}
 
         .dashboard-container { max-width: 1200px; margin: 20px auto; padding: 0 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
         @media (max-width: 900px) { .dashboard-container { grid-template-columns: 1fr; } }
@@ -35,7 +58,6 @@
         label { display: block; margin-bottom: 5px; font-size: 15px; color: var(--text-primary); }
         input[type="file"], input[type="color"], input[type="range"] { width: 100%; margin-bottom: 12px; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-body); cursor: pointer;}
         
-        /* કેમેરા બટન્સ માટે નવું સેટિંગ */
         .cam-btn-group { display: flex; gap: 10px; margin-bottom: 10px; }
         .cam-btn-group button { font-family: 'Baloo Bhai 2', cursive; font-weight: 800; border: none; padding: 10px; font-size: 14px; cursor: pointer; border-radius: 6px; width: 100%; color: white; transition: 0.2s; }
         .btn-cam-start { background-color: #007bff; }
@@ -49,10 +71,11 @@
         .crop-container { display: none; width: 100%; max-height: 350px; margin-bottom: 15px; border-radius: 8px; overflow: hidden; }
         #cropImg { max-width: 100%; display: block; }
         
-        .photo-wrapper { position: relative; width: 140px; height: 180px; margin: 10px auto; border: 2px solid black; background: white; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        /* ટ્રાન્સપરન્ટ ચેકરબોર્ડ બેકગ્રાઉન્ડ */
+        .photo-wrapper { position: relative; width: 140px; height: 180px; margin: 10px auto; border: 2px solid black; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYsZcAY9VAOMamBQBqM2MGiDIQAAl/sHAtV442AAAAAASUVORK5CYII='); overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .photo-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        /* --- 100% ફિક્સ: બહારની એક્શન પેનલ --- */
+        /* એક્શન પેનલ */
         .action-panel {
             background-color: var(--bg-card); border-top: 3px solid var(--primary-solid);
             padding: 15px 20px; box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
@@ -80,8 +103,10 @@
         #statusOverlay { display: none; background-color: rgba(0,0,0,0.9); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1001; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; text-align: center; padding: 20px;}
         .loader-spin { border: 5px solid #444; border-top: 5px solid var(--accent); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .progress-bar-container { width: 80%; max-width: 400px; background: #333; height: 15px; border-radius: 10px; margin-top: 20px; overflow: hidden; display: none;}
+        .progress-bar-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.2s; }
 
-        /* 100% PERFECT PRINT CSS (એક જ પેજ માટે) */
+        /* Print CSS - 100% Fixed Blank Pages */
         #printPreviewModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; overflow-y: auto; padding: 20px;}
         .modal-box { background: white; padding: 20px; border-radius: 12px; text-align: center; max-width: 95%; }
         .paper-4x6-layout { width: 6in; height: 4in; background: white; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0.08in; padding: 0.12in; box-sizing: border-box; border: 2px dashed #000; margin: 0 auto; }
@@ -110,16 +135,40 @@
 </svg>
 
 <div class="header">
-    <h1>અલ-અક્સા સ્ટુડિયો LAB</h1>
-    <p>ઢુણાદરા, ગુજરાત | મો. 9638730186</p>
+    <h1>અલ-અક્સા કોમ્પ્યુટર સેન્ટર</h1>
+    <p>ધુણાદરા, ગુજરાત | મો. 9638730186</p>
 </div>
 
 <div class="top-bar">
-    <div style="display: flex; gap: 10px;">
-        <label style="margin:0;">🎨 થીમ:</label>
+    <div style="display: flex; gap: 10px; align-items: center;">
+        <label style="margin:0;">🎨 થીમ પસંદ કરો:</label>
         <select id="themeSelect">
-            <option value="light">ડિફોલ્ટ (Light)</option>
-            <option value="dark">ડાર્ક મોડ (Dark)</option>
+            <option value="light">ડિફોલ્ટ લાઈટ</option>
+            <option value="dark">ડાર્ક મોડ</option>
+            <option value="pro-blue">પ્રો બ્લુ</option>
+            <option value="forest-green">ફોરેસ્ટ ગ્રીન</option>
+            <option value="crimson-red">ક્રિમસન રેડ</option>
+            <option value="sunset-orange">સનસેટ ઓરેન્જ</option>
+            <option value="ocean-teal">ઓશન ટીલ</option>
+            <option value="royal-purple">રોયલ પર્પલ</option>
+            <option value="midnight-blue">મિડનાઇટ બ્લુ</option>
+            <option value="golden-hour">ગોલ્ડન અવર</option>
+            <option value="cherry-blossom">ચેરી બ્લોસમ</option>
+            <option value="slate-grey">સ્લેટ ગ્રે</option>
+            <option value="neon-nights">નિયોન નાઈટ્સ</option>
+            <option value="coffee-bean">કોફી બીન</option>
+            <option value="mint-fresh">મિન્ટ ફ્રેશ</option>
+            <option value="lavender-dream">લેવેન્ડર ડ્રીમ</option>
+            <option value="monochrome">મોનોક્રોમ</option>
+            <option value="cyberpunk">સાયબરપંક</option>
+            <option value="pastel-spring">પેસ્ટલ સ્પ્રિંગ</option>
+            <option value="autumn-leaves">ઓટમ લીવ્સ</option>
+            <option value="winter-snow">વિન્ટર સ્નો</option>
+            <option value="desert-sand">ડેઝર્ટ સેન્ડ</option>
+            <option value="galaxy-space">ગેલેક્સી સ્પેસ</option>
+            <option value="retro-wave">રેટ્રો વેવ</option>
+            <option value="vibrant-pop">વાઈબ્રન્ટ પોપ</option>
+            <option value="earthy-tones">અર્થી ટોન</option>
         </select>
     </div>
     <div>
@@ -149,11 +198,11 @@
         <div id="cropBox" class="crop-container">
             <img id="cropImg" src="">
         </div>
-        <p style="font-size: 12px; color: red; margin-top: 5px;">* ફોટો પસંદ કરી, નીચે પટ્ટીમાં <b>"ક્રોપ ફાઇનલ"</b> દબાવો.</p>
+        <p style="font-size: 12px; color: red; margin-top: 5px;">* ફોટો પસંદ કરી, નીચે <b>"ક્રોપ ફાઇનલ"</b> દબાવો.</p>
     </div>
 
     <div class="panel-card">
-        <div class="section-title"><span style="color:var(--accent)">૨.</span> કલર અને ફિલ્ટર્સ</div>
+        <div class="section-title"><span style="color:var(--accent)">૨.</span> કલર અને સ્મૂથનેસ</div>
         
         <label>પાછળનો કલર (BG Color):</label>
         <input type="color" id="pickColor" value="#ffffff">
@@ -164,6 +213,18 @@
         <label class="check-box-label">
             <input type="checkbox" id="filterBW"> ⚫ બ્લેક એન્ડ વ્હાઇટ (B&W)
         </label>
+
+        <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.05); border-radius: 8px;">
+            <div style="margin-bottom: 10px;">
+                <label>એજ ફેધરિંગ (કિનારી સ્મૂધ): <span id="featherVal">0.5</span>px</label>
+                <input type="range" id="featherR" min="0" max="5" step="0.5" value="0.5">
+            </div>
+            <div>
+                <label>એન્ટેલિઆસિંગ (કિનારી કાપવી): <span id="dilateVal">0</span>px</label>
+                <input type="range" id="dilateR" min="0" max="5" step="0.5" value="0">
+            </div>
+            <p style="font-size: 11px; margin: 0; color: #666;">(Bria AI થી કટિંગ કર્યા પછી કિનારીઓ સેટ કરવા)</p>
+        </div>
 
         <div style="margin-top: 15px;">
             <label>બોર્ડર: <span id="borderRVal">2</span>px</label>
@@ -191,8 +252,8 @@
 
 <div class="action-panel">
     <button class="btn-crop-action" id="btnActionCrop">✂️ ક્રોપ ફાઇનલ</button>
-    <button class="btn-bg-action" id="btnActionBg">🪄 Background કાઢો (Fast AI)</button>
-    <button class="btn-magic-action" id="btnActionMagic">✨ ઓટો કલર સેટ</button>
+    <button class="btn-bg-action" id="btnActionBg">🪄 Bria AI કાઢો (સ્મૂધ)</button>
+    <button class="btn-magic-action" id="btnActionMagic">✨ ઓટો કલર</button>
     <button class="btn-print-action" id="btnActionPrint">🖨️ પ્રિન્ટ કાઢવા જુઓ</button>
 </div>
 
@@ -210,14 +271,31 @@
 <div id="statusOverlay">
     <div class="loader-spin"></div>
     <span id="loadingText" style="font-weight: 800; color: var(--accent);">⏳ પ્રોસેસિંગ ચાલુ છે...</span>
+    
+    <div class="progress-bar-container" id="progressContainer">
+        <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+    <p id="progressPercent" style="font-size: 16px; font-weight: bold; margin-top: 10px; display: none;">0%</p>
+    
+    <p style="font-size: 14px; margin-top: 10px; color:#ddd;">(જો પહેલી વાર વાપરતા હશો તો Bria 1.4 મોડલ ડાઉનલોડ થશે, પેજ બંધ ન કરવું)</p>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-<script>
+
+<script type="module">
+    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.16.1';
+    
+    // મોડલને ફાસ્ટ ચલાવવા માટેના 100% પર્ફેક્ટ સેટિંગ્સ
+    env.allowLocalModels = false;
+    env.useBrowserCache = true; 
+    env.backends.onnx.wasm.numThreads = Math.min(navigator.hardwareConcurrency || 4, 4); 
+
     let cropper;
     let currentImg = "";
+    let originalImageBlobUrl = ""; 
     let streamRef = null;
     let useFrontCamera = true; 
+    let briaPipeline = null; 
 
     const fileInput = document.getElementById('fileInput');
     const previewImage = document.getElementById('previewImage');
@@ -226,20 +304,27 @@
 
     document.getElementById('themeSelect').onchange = (e) => document.body.setAttribute('data-theme', e.target.value);
 
-    // સ્લાઇડર અને ફિલ્ટર્સ
+    // સ્લાઇડર અપડેટ્સ
     const updateSlidVals = () => {
         document.getElementById('borderRVal').innerText = document.getElementById('borderR').value;
         document.getElementById('brightVal').innerText = document.getElementById('bright').value;
         document.getElementById('contVal').innerText = document.getElementById('contrast').value;
+        document.getElementById('featherVal').innerText = document.getElementById('featherR').value;
+        document.getElementById('dilateVal').innerText = document.getElementById('dilateR').value;
     };
-    ['borderR', 'bright', 'contrast'].forEach(id => {
-        document.getElementById(id).oninput = () => { updateSlidVals(); updateStyles(); };
+    
+    ['borderR', 'bright', 'contrast', 'featherR', 'dilateR'].forEach(id => {
+        document.getElementById(id).oninput = () => { 
+            updateSlidVals(); 
+            updateStyles(); 
+        };
     });
+
     document.getElementById('pickColor').oninput = updateStyles;
     document.getElementById('filterBW').onchange = updateStyles;
     document.getElementById('filterSharpen').onchange = updateStyles;
 
-    // ઓટો મેજિક બટન (એક્શન પેનલ)
+    // ઓટો મેજિક બટન
     document.getElementById('btnActionMagic').onclick = () => {
         document.getElementById('bright').value = 110; 
         document.getElementById('contrast').value = 115; 
@@ -298,64 +383,105 @@
         cropper = new Cropper(document.getElementById('cropImg'), { aspectRatio: 3.5 / 4.5, viewMode: 1 });
     }
 
-    // ક્રોપ ફાઇનલ બટન (એક્શન પેનલ)
+    // ક્રોપ ફાઇનલ બટન
     document.getElementById('btnActionCrop').onclick = () => {
         if(!cropper) return alert("પહેલા ફોટો અપલોડ કરો.");
-        currentImg = cropper.getCroppedCanvas({ width: 350, height: 450 }).toDataURL("image/png");
+        originalImageBlobUrl = cropper.getCroppedCanvas({ width: 350, height: 450 }).toDataURL("image/png");
+        currentImg = originalImageBlobUrl;
         previewImage.src = currentImg;
+        previewWrapper.style.backgroundColor = "transparent";
         document.getElementById('cropBox').style.display = "none";
         updateStyles();
     };
 
-    // --- 100% NEW AI (MediaPipe) WITH SMOOTH EDGES ---
+    // --- BRIA AI 1.4 (Remove.bg જેવું અસલી 100% પર્ફેક્ટ કટિંગ) ---
     document.getElementById('btnActionBg').onclick = async () => {
-        if (!currentImg) return alert("કૃપા કરીને પહેલા ફોટો ક્રોપ કરો!");
+        if (!originalImageBlobUrl) return alert("કૃપા કરીને પહેલા ફોટો ક્રોપ કરો!");
         
         document.getElementById('statusOverlay').style.display = "flex";
-        document.getElementById('loadingText').innerText = "⏳ એક સેકન્ડ... કટિંગ ચાલુ છે";
+        document.getElementById('progressContainer').style.display = "block";
+        document.getElementById('progressPercent').style.display = "block";
+        document.getElementById('loadingText').innerText = "⏳ Bria AI 1.4 મોડલ લોડ થઈ રહ્યું છે...";
 
-        const imgElement = new Image();
-        imgElement.crossOrigin = "anonymous";
-        imgElement.src = currentImg;
-        
-        imgElement.onload = async () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = imgElement.width;
-            canvas.height = imgElement.height;
-            const ctx = canvas.getContext('2d');
+        try {
+            // 1. મોડલ લોડ કરવું (કેશ મેમરી સાથે અને Quantized મોડલ ફાસ્ટ ડાઉનલોડ માટે)
+            if (!briaPipeline) {
+                briaPipeline = await pipeline('image-segmentation', 'briaai/RMBG-1.4', {
+                    quantized: true, // બહુ જ જરૂરી! મોડલ 40MB માં ખુલી જશે નહિ તો બ્રાઉઝર ચોંટી જશે.
+                    progress_callback: (x) => {
+                        if (x.status === 'progress') {
+                            document.getElementById('progressBar').style.width = x.progress + "%";
+                            document.getElementById('progressPercent').innerText = Math.round(x.progress) + "%";
+                        }
+                    }
+                });
+            }
 
-            // Initialize Light-weight AI
-            const selfieSegmentation = new SelfieSegmentation({locateFile: (file) => {
-                return `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${file}`;
-            }});
+            document.getElementById('loadingText').innerText = "✨ બિલકુલ Remove.bg જેવું 100% પર્ફેક્ટ કટિંગ ચાલુ છે...";
 
-            selfieSegmentation.setOptions({ modelSelection: 0 }); // 0 for high quality edges
-            
-            selfieSegmentation.onResults((results) => {
-                ctx.save();
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // 2. મોડલ દ્વારા માસ્ક બનાવવો
+            const result = await briaPipeline(originalImageBlobUrl);
+            const maskObj = Array.isArray(result) ? result[0] : result;
+            const rawMask = maskObj.mask || maskObj;
 
-                // જાદુ: Edge Feathering (કિનારીઓને સ્મૂથ કરવા માટે 1px બ્લર)
-                ctx.filter = 'blur(1px)';
-                ctx.drawImage(results.segmentationMask, 0, 0, canvas.width, canvas.height);
-                ctx.filter = 'none'; // બ્લર બંધ કરો
+            // 3. માસ્ક કેન્વાસમાં ડ્રો કરવો
+            const maskCanvas = document.createElement('canvas');
+            maskCanvas.width = rawMask.width;
+            maskCanvas.height = rawMask.height;
+            const ctxMask = maskCanvas.getContext('2d');
+            const imgData = ctxMask.createImageData(rawMask.width, rawMask.height);
 
-                // મૂળ ફોટાને માસ્કની અંદર સેટ કરો
-                ctx.globalCompositeOperation = 'source-in';
-                ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
-                ctx.restore();
+            // Bria નો માસ્ક બ્લેક એન્ડ વાઈટ હોય છે, તેને ટ્રાન્સપરન્ટ બનાવવાની પ્રોસેસ
+            for (let i = 0; i < rawMask.data.length; i++) {
+                const val = rawMask.data[i];
+                imgData.data[i * 4] = 255;
+                imgData.data[i * 4 + 1] = 255;
+                imgData.data[i * 4 + 2] = 255;
+                imgData.data[i * 4 + 3] = val; // Alpha (ટ્રાન્સપરન્સી સેટ કરે)
+            }
+            ctxMask.putImageData(imgData, 0, 0);
 
-                // ફાઇનલ સ્મૂથ ફોટો
-                currentImg = canvas.toDataURL('image/png');
-                previewImage.src = currentImg;
-                
-                selfieSegmentation.close(); // રેમ (RAM) ખાલી કરવા
-                document.getElementById('statusOverlay').style.display = "none";
-                updateStyles();
-            });
+            // 4. ઓરિજિનલ ફોટો અને માસ્ક ભેગા કરવા (સ્મૂથનેસ કંટ્રોલ સાથે)
+            const img = new Image();
+            img.src = originalImageBlobUrl;
+            await new Promise(r => img.onload = r);
 
-            await selfieSegmentation.send({image: imgElement});
-        };
+            const finalCanvas = document.createElement('canvas');
+            finalCanvas.width = img.width;
+            finalCanvas.height = img.height;
+            const finalCtx = finalCanvas.getContext('2d');
+
+            finalCtx.drawImage(img, 0, 0, finalCanvas.width, finalCanvas.height);
+
+            // સ્મૂથનેસના સેટિંગ
+            const feather = parseFloat(document.getElementById('featherR').value);
+            const dilate = parseFloat(document.getElementById('dilateR').value);
+
+            finalCtx.globalCompositeOperation = 'destination-in';
+
+            if (feather > 0) {
+                finalCtx.filter = `blur(${feather}px)`;
+            }
+
+            // માસ્કની કિનારીઓ થોડી કાપીને કલર લીક અટકાવવો (Dilate)
+            if(dilate > 0) {
+                 finalCtx.drawImage(maskCanvas, dilate, dilate, finalCanvas.width - (dilate*2), finalCanvas.height - (dilate*2));
+            } else {
+                 finalCtx.drawImage(maskCanvas, 0, 0, finalCanvas.width, finalCanvas.height);
+            }
+
+            // ફાઇનલ રિઝલ્ટ સેવ કરવું
+            currentImg = finalCanvas.toDataURL('image/png');
+            previewImage.src = currentImg;
+
+            document.getElementById('statusOverlay').style.display = "none";
+            updateStyles();
+
+        } catch (e) {
+            console.error(e);
+            alert("ભૂલ: ઇન્ટરનેટ કનેક્શન તપાસો અથવા પેજ રિફ્રેશ કરો.\nError Details: " + e.message);
+            document.getElementById('statusOverlay').style.display = "none";
+        }
     };
 
     // --- સ્ટાઈલ અને ફિલ્ટર્સ એપ્લાય કરવા ---
@@ -373,7 +499,7 @@
         previewImage.style.filter = filterString;
     }
 
-    // --- પ્રિન્ટ સેટઅપ (એક્શન પેનલ) ---
+    // --- પ્રિન્ટ સેટઅપ ---
     document.getElementById('btnActionPrint').onclick = () => {
         if (!currentImg) return alert("પ્રિન્ટ માટે પહેલા ફોટો તૈયાર કરો!");
         const area = document.getElementById('printArea');
@@ -398,6 +524,7 @@
         if (!currentImg) return alert("ફોટો તૈયાર કરો!");
         const canvas = document.createElement('canvas'); canvas.width = 350; canvas.height = 450; const ctx = canvas.getContext('2d');
         
+        // Background
         ctx.fillStyle = document.getElementById('pickColor').value; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
@@ -411,6 +538,8 @@
         const img = new Image();
         img.onload = () => {
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            
+            // Border
             const bw = parseInt(document.getElementById('borderR').value) * 2.5;
             if (bw > 0) { ctx.filter = 'none'; ctx.lineWidth = bw; ctx.strokeStyle = 'black'; ctx.strokeRect(bw/2, bw/2, 350 - bw, 450 - bw); }
             
