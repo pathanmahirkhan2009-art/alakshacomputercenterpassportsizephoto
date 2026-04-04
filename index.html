@@ -133,7 +133,7 @@
 </svg>
 
 <div class="header">
-    <h1>🔥 અલ-અક્સા સ્ટુડિયો LAB 📸</h1>
+    <h1>. 🔥 અલ-અકશા સ્ટુડિયો LAB 📸  </h1>
     <p>ઢુણાદરા, ગુજરાત | મો. 9638730186</p>
 </div>
 
@@ -262,7 +262,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
 <script>
-    // તમારી REMOVE.BG ની અસલી API KEY અહી સેટ કરેલી છે!
+    // -----------------------------------------------------------
+    // તમારી REMOVE.BG ની અસલી API KEY અહી 100% સેટ કરી દીધી છે!
+    // -----------------------------------------------------------
     const REMOVE_BG_API_KEY = "EGJvRcs1VeVaSyiQnk87iwHU";
 
     let cropper;
@@ -377,10 +379,9 @@
         // API ને ડેટા મોકલવાની તૈયારી
         const formData = new FormData();
         formData.append('image_file', currentBlob);
-        formData.append('size', 'auto'); // પ્રિવ્યુ સાઇઝ માટે ફ્રીમાં ચાલશે
+        formData.append('size', 'auto'); 
 
         try {
-            // સીધું જ Remove.bg ના ઓફિશિયલ સર્વર પર કનેક્શન (NO GITHUB BLOCKING)
             const response = await fetch('https://api.remove.bg/v1.0/removebg', {
                 method: 'POST',
                 headers: {
@@ -390,25 +391,22 @@
             });
 
             if (response.ok) {
-                // સફળતાપૂર્વક કટિંગ થઈ ગયું!
                 const resultBlob = await response.blob();
                 currentBlob = resultBlob;
                 currentImg = URL.createObjectURL(resultBlob);
                 previewImage.src = currentImg;
                 document.getElementById('loadingText').innerText = "✨ કટિંગ 100% સફળ!";
             } else {
-                // જો ક્રેડિટ પૂરી થાય અથવા API કી ખોટી હોય તો ભૂલ બતાવશે
                 const errorData = await response.json();
                 let errorMsg = response.statusText;
                 if(errorData.errors && errorData.errors[0]) {
                      errorMsg = errorData.errors[0].title;
                 }
-                alert("Remove.bg માં ભૂલ આવી: " + errorMsg + "\n\nજો 50 ફ્રી ક્રેડિટ પૂરી થઈ ગઈ હોય, તો નવી API Key બનાવીને કોડમાં નાખી દો.");
+                alert("Remove.bg માં ભૂલ આવી: " + errorMsg + "\n\nઆનો મતલબ API Key ખોટી છે અથવા 50 ક્રેડિટ પૂરી થઈ ગઈ છે.");
             }
         } catch (error) { 
             alert("તમારું ઇન્ટરનેટ કનેક્શન તપાસો! \nError: " + error.message); 
         } finally {
-            // 2 સેકન્ડ પછી લોડિંગ બંધ કરી દેવું
             setTimeout(() => {
                 document.getElementById('statusOverlay').style.display = "none";
                 updateStyles();
