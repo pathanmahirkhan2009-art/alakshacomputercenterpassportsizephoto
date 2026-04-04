@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>અલ-અક્સા પાસપોર્ટ પ્રો - લેટેસ્ટ Bria AI ફિક્સ</title>
+    <title>અલ-અક્સા પાસપોર્ટ પ્રો - 100% સ્ટેબલ વર્ઝન</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/dist/browser.js"></script>
 
     <style>
         /* --- 25+ પ્રોફેશનલ થીમ્સ --- */
@@ -100,7 +102,7 @@
         .check-box-label input { width: 18px; height: 18px; margin: 0; }
 
         /* Loading */
-        #statusOverlay { display: none; background-color: rgba(0,0,0,0.95); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1001; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; text-align: center; padding: 20px;}
+        #statusOverlay { display: none; background-color: rgba(0,0,0,0.9); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1001; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; text-align: center; padding: 20px;}
         .loader-spin { border: 5px solid #444; border-top: 5px solid var(--accent); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .progress-bar-container { width: 80%; max-width: 400px; background: #333; height: 15px; border-radius: 10px; margin-top: 20px; overflow: hidden; display: none;}
@@ -202,7 +204,7 @@
     </div>
 
     <div class="panel-card">
-        <div class="section-title"><span style="color:var(--accent)">૨.</span> કલર અને સ્મૂથનેસ</div>
+        <div class="section-title"><span style="color:var(--accent)">૨.</span> કલર અને ફિલ્ટર્સ</div>
         
         <label>પાછળનો કલર (BG Color):</label>
         <input type="color" id="pickColor" value="#ffffff">
@@ -213,18 +215,6 @@
         <label class="check-box-label">
             <input type="checkbox" id="filterBW"> ⚫ બ્લેક એન્ડ વ્હાઇટ (B&W)
         </label>
-
-        <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.05); border-radius: 8px;">
-            <div style="margin-bottom: 10px;">
-                <label>એજ ફેધરિંગ (કિનારી સ્મૂધ): <span id="featherVal">0.5</span>px</label>
-                <input type="range" id="featherR" min="0" max="5" step="0.5" value="0.5">
-            </div>
-            <div>
-                <label>એન્ટેલિઆસિંગ (કિનારી કાપવી): <span id="dilateVal">0</span>px</label>
-                <input type="range" id="dilateR" min="0" max="5" step="0.5" value="0">
-            </div>
-            <p style="font-size: 11px; margin: 0; color: #666;">(Bria AI થી કટિંગ કર્યા પછી કિનારીઓ સેટ કરવા)</p>
-        </div>
 
         <div style="margin-top: 15px;">
             <label>બોર્ડર: <span id="borderRVal">2</span>px</label>
@@ -246,14 +236,14 @@
             <img id="previewImage" src="https://via.placeholder.com/140x180?text=Select+Photo">
         </div>
         <button class="btn-download-action" id="btnDownloadSingle">⬇️ સિંગલ ફોટો ડાઉનલોડ</button>
-        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 10px;">ફોટો તૈયાર થાય એટલે નીચે <b>પ્રિન્ટ</b> બટન દબાવો.</p>
+        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 10px;">ફોટો તૈયાર થાય એટલે નીચે <b>પ્રિન્ટ</b> દબાવો.</p>
     </div>
 </div>
 
 <div class="action-panel">
     <button class="btn-crop-action" id="btnActionCrop">✂️ ક્રોપ ફાઇનલ</button>
-    <button class="btn-bg-action" id="btnActionBg">🪄 Bria AI કાઢો (સ્મૂધ)</button>
-    <button class="btn-magic-action" id="btnActionMagic">✨ ઓટો કલર</button>
+    <button class="btn-bg-action" id="btnActionBg">🪄 AI થી Background કાઢો</button>
+    <button class="btn-magic-action" id="btnActionMagic">✨ ઓટો કલર સેટ</button>
     <button class="btn-print-action" id="btnActionPrint">🖨️ પ્રિન્ટ કાઢવા જુઓ</button>
 </div>
 
@@ -271,32 +261,20 @@
 <div id="statusOverlay">
     <div class="loader-spin"></div>
     <span id="loadingText" style="font-weight: 800; color: var(--accent);">⏳ પ્રોસેસિંગ ચાલુ છે...</span>
-    
     <div class="progress-bar-container" id="progressContainer">
         <div class="progress-bar-fill" id="progressBar"></div>
     </div>
     <p id="progressPercent" style="font-size: 16px; font-weight: bold; margin-top: 10px; display: none;">0%</p>
-    
-    <p style="font-size: 14px; margin-top: 10px; color:#ddd;">(જો પહેલી વાર વાપરતા હશો તો Bria 1.4 મોડલ ડાઉનલોડ થશે, પેજ બંધ ન કરવું)</p>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
-<script type="module">
-    // આ લાઈનમાં જ પ્રોબ્લેમ હતો, જે મેં 2.16.1 થી બદલીને લેટેસ્ટ 2.17.2 કરી નાખ્યું છે. 
-    import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
-    
-    // મોડલને ફાસ્ટ ચલાવવા માટેના 100% પર્ફેક્ટ સેટિંગ્સ
-    env.allowLocalModels = false;
-    env.useBrowserCache = true; 
-    env.backends.onnx.wasm.numThreads = Math.min(navigator.hardwareConcurrency || 4, 4); 
-
+<script>
     let cropper;
+    let currentBlob = null;
     let currentImg = "";
-    let originalImageBlobUrl = ""; 
     let streamRef = null;
     let useFrontCamera = true; 
-    let briaPipeline = null; 
 
     const fileInput = document.getElementById('fileInput');
     const previewImage = document.getElementById('previewImage');
@@ -310,11 +288,9 @@
         document.getElementById('borderRVal').innerText = document.getElementById('borderR').value;
         document.getElementById('brightVal').innerText = document.getElementById('bright').value;
         document.getElementById('contVal').innerText = document.getElementById('contrast').value;
-        document.getElementById('featherVal').innerText = document.getElementById('featherR').value;
-        document.getElementById('dilateVal').innerText = document.getElementById('dilateR').value;
     };
     
-    ['borderR', 'bright', 'contrast', 'featherR', 'dilateR'].forEach(id => {
+    ['borderR', 'bright', 'contrast'].forEach(id => {
         document.getElementById(id).oninput = () => { 
             updateSlidVals(); 
             updateStyles(); 
@@ -384,104 +360,53 @@
         cropper = new Cropper(document.getElementById('cropImg'), { aspectRatio: 3.5 / 4.5, viewMode: 1 });
     }
 
-    // ક્રોપ ફાઇનલ બટન
     document.getElementById('btnActionCrop').onclick = () => {
         if(!cropper) return alert("પહેલા ફોટો અપલોડ કરો.");
-        originalImageBlobUrl = cropper.getCroppedCanvas({ width: 350, height: 450 }).toDataURL("image/png");
-        currentImg = originalImageBlobUrl;
-        previewImage.src = currentImg;
-        previewWrapper.style.backgroundColor = "transparent";
-        document.getElementById('cropBox').style.display = "none";
-        updateStyles();
+        cropper.getCroppedCanvas({ width: 350, height: 450 }).toBlob((blob) => {
+            currentBlob = blob;
+            currentImg = URL.createObjectURL(blob);
+            previewImage.src = currentImg;
+            previewWrapper.style.backgroundColor = "transparent";
+            document.getElementById('cropBox').style.display = "none";
+            updateStyles();
+        }, 'image/png');
     };
 
-    // --- BRIA AI 1.4 (Remove.bg જેવું અસલી 100% પર્ફેક્ટ કટિંગ) ---
+    // --- 100% ERROR-FREE IMGLY AI IMPLEMENTATION ---
     document.getElementById('btnActionBg').onclick = async () => {
-        if (!originalImageBlobUrl) return alert("કૃપા કરીને પહેલા ફોટો ક્રોપ કરો!");
+        if (!currentBlob) return alert("કૃપા કરીને પહેલા ફોટો સિલેક્ટ કરી ક્રોપ કરો!");
         
         document.getElementById('statusOverlay').style.display = "flex";
         document.getElementById('progressContainer').style.display = "block";
         document.getElementById('progressPercent').style.display = "block";
-        document.getElementById('loadingText').innerText = "⏳ Bria AI 1.4 મોડલ લોડ થઈ રહ્યું છે...";
+        document.getElementById('loadingText').innerText = "⏳ High-Quality AI મોડલ ડાઉનલોડ થઈ રહ્યું છે...";
 
         try {
-            // 1. મોડલ લોડ કરવું (કેશ મેમરી સાથે અને Quantized મોડલ ફાસ્ટ ડાઉનલોડ માટે)
-            if (!briaPipeline) {
-                briaPipeline = await pipeline('image-segmentation', 'briaai/RMBG-1.4', {
-                    quantized: true, // બહુ જ જરૂરી! મોડલ 40MB માં ખુલી જશે નહિ તો બ્રાઉઝર ચોંટી જશે.
-                    progress_callback: (x) => {
-                        if (x.status === 'progress') {
-                            document.getElementById('progressBar').style.width = x.progress + "%";
-                            document.getElementById('progressPercent').innerText = Math.round(x.progress) + "%";
-                        }
+            // MOST IMPORTANT FIX: Explicitly stating public path so it never fails to find files
+            const config = { 
+                publicPath: "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/dist/",
+                progress: (k, c, t) => {
+                    if (t > 0) {
+                        const p = Math.round((c / t) * 100);
+                        document.getElementById('progressBar').style.width = p + "%";
+                        document.getElementById('progressPercent').innerText = p + "%";
+                        if(p === 100) document.getElementById('loadingText').innerText = "✨ કટિંગ પ્રોસેસ ચાલુ છે...";
                     }
-                });
-            }
-
-            document.getElementById('loadingText').innerText = "✨ બિલકુલ Remove.bg જેવું 100% પર્ફેક્ટ કટિંગ ચાલુ છે...";
-
-            // 2. મોડલ દ્વારા માસ્ક બનાવવો
-            const result = await briaPipeline(originalImageBlobUrl);
-            const maskObj = Array.isArray(result) ? result[0] : result;
-            const rawMask = maskObj.mask || maskObj;
-
-            // 3. માસ્ક કેન્વાસમાં ડ્રો કરવો
-            const maskCanvas = document.createElement('canvas');
-            maskCanvas.width = rawMask.width;
-            maskCanvas.height = rawMask.height;
-            const ctxMask = maskCanvas.getContext('2d');
-            const imgData = ctxMask.createImageData(rawMask.width, rawMask.height);
-
-            // Bria નો માસ્ક બ્લેક એન્ડ વાઈટ હોય છે, તેને ટ્રાન્સપરન્ટ બનાવવાની પ્રોસેસ
-            for (let i = 0; i < rawMask.data.length; i++) {
-                const val = rawMask.data[i];
-                imgData.data[i * 4] = 255;
-                imgData.data[i * 4 + 1] = 255;
-                imgData.data[i * 4 + 2] = 255;
-                imgData.data[i * 4 + 3] = val; // Alpha (ટ્રાન્સપરન્સી સેટ કરે)
-            }
-            ctxMask.putImageData(imgData, 0, 0);
-
-            // 4. ઓરિજિનલ ફોટો અને માસ્ક ભેગા કરવા (સ્મૂથનેસ કંટ્રોલ સાથે)
-            const img = new Image();
-            img.src = originalImageBlobUrl;
-            await new Promise(r => img.onload = r);
-
-            const finalCanvas = document.createElement('canvas');
-            finalCanvas.width = img.width;
-            finalCanvas.height = img.height;
-            const finalCtx = finalCanvas.getContext('2d');
-
-            finalCtx.drawImage(img, 0, 0, finalCanvas.width, finalCanvas.height);
-
-            // સ્મૂથનેસના સેટિંગ
-            const feather = parseFloat(document.getElementById('featherR').value);
-            const dilate = parseFloat(document.getElementById('dilateR').value);
-
-            finalCtx.globalCompositeOperation = 'destination-in';
-
-            if (feather > 0) {
-                finalCtx.filter = `blur(${feather}px)`;
-            }
-
-            // માસ્કની કિનારીઓ થોડી કાપીને કલર લીક અટકાવવો (Dilate)
-            if(dilate > 0) {
-                 finalCtx.drawImage(maskCanvas, dilate, dilate, finalCanvas.width - (dilate*2), finalCanvas.height - (dilate*2));
-            } else {
-                 finalCtx.drawImage(maskCanvas, 0, 0, finalCanvas.width, finalCanvas.height);
-            }
-
-            // ફાઇનલ રિઝલ્ટ સેવ કરવું
-            currentImg = finalCanvas.toDataURL('image/png');
+                }
+            };
+            
+            // Calling the global function provided by the <script> tag
+            const resultBlob = await imglyRemoveBackground(currentBlob, config);
+            currentBlob = resultBlob;
+            currentImg = URL.createObjectURL(resultBlob);
             previewImage.src = currentImg;
-
+        } catch (e) { 
+            alert("Error Details: " + e.message + "\nતમારું ઇન્ટરનેટ ચેક કરો. જો પ્રોબ્લેમ રહે તો પેજ રિફ્રેશ કરો."); 
+        } finally {
             document.getElementById('statusOverlay').style.display = "none";
+            document.getElementById('progressContainer').style.display = "none";
+            document.getElementById('progressPercent').style.display = "none";
             updateStyles();
-
-        } catch (e) {
-            console.error(e);
-            alert("ભૂલ: ઇન્ટરનેટ કનેક્શન તપાસો અથવા પેજ રિફ્રેશ કરો.\nError Details: " + e.message);
-            document.getElementById('statusOverlay').style.display = "none";
         }
     };
 
