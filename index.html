@@ -3,241 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>અલ-અક્સા પાસપોર્ટ પ્રો - સુપરફાસ્ટ મેકર</title>
+    <title>અલ-અક્સા પાસપોર્ટ પ્રો - ફાઈનલ વર્ઝન</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@600;700;800&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/dist/browser.js"></script>
 
     <style>
-        /* --- PRO Tier Themes & Variables --- */
-        :root {
-            --bg-body: #f4f7fa; --bg-card: rgba(255, 255, 255, 0.95); --text-primary: #1a1a1a; --text-secondary: #555555;
-            --primary-gradient: linear-gradient(135deg, #004085 0%, #0056b3 100%);
-            --accent: #ffc107; --border-color: #eaeaea; --shadow-card: 0 10px 20px rgba(0,0,0,0.05);
-            --primary-solid: #004085;
-        }
-        [data-theme="dark"] {
-            --bg-body: #121212; --bg-card: rgba(30, 30, 30, 0.95); --text-primary: #f1f1f1; --text-secondary: #aaaaaa;
-            --primary-gradient: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
-            --accent: #bb86fc; --border-color: #333333; --shadow-card: 0 10px 20px rgba(0,0,0,0.3);
-            --primary-solid: #333333;
-        }
-        [data-theme="navy"] {
-            --bg-body: #001f3f; --bg-card: rgba(0, 31, 63, 0.9); --text-primary: #f0f0f0; --text-secondary: #c0c0c0;
-            --primary-gradient: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-            --accent: #ffb300; --border-color: #003366; --shadow-card: 0 10px 20px rgba(0,0,0,0.2);
-            --primary-solid: #001f3f;
-        }
-        [data-theme="forest"] {
-            --bg-body: #002b11; --bg-card: rgba(0, 43, 17, 0.9); --text-primary: #e0f0e0; --text-secondary: #a0c0a0;
-            --primary-gradient: linear-gradient(135deg, #002b11 0%, #1b5e20 100%);
-            --accent: #ffeb3b; --border-color: #1b5e20; --shadow-card: 0 10px 20px rgba(0,0,0,0.2);
-            --primary-solid: #002b11;
-        }
-        [data-theme="crimson"] {
-            --bg-body: #410000; --bg-card: rgba(65, 0, 0, 0.9); --text-primary: #f0e0e0; --text-secondary: #c0a0a0;
-            --primary-gradient: linear-gradient(135deg, #410000 0%, #881c1c 100%);
-            --accent: #ffeb3b; --border-color: #881c1c; --shadow-card: 0 10px 20px rgba(0,0,0,0.2);
-            --primary-solid: #410000;
-        }
+        :root { --bg-body: #f4f7fa; --bg-card: rgba(255, 255, 255, 0.95); --text-primary: #1a1a1a; --text-secondary: #555555; --primary-gradient: linear-gradient(135deg, #004085 0%, #0056b3 100%); --accent: #ffc107; --border-color: #eaeaea; --shadow-card: 0 10px 20px rgba(0,0,0,0.05); --primary-solid: #004085; }
+        [data-theme="dark"] { --bg-body: #121212; --bg-card: rgba(30, 30, 30, 0.95); --text-primary: #f1f1f1; --text-secondary: #aaaaaa; --primary-gradient: linear-gradient(135deg, #333333 0%, #1a1a1a 100%); --accent: #bb86fc; --border-color: #333333; --shadow-card: 0 10px 20px rgba(0,0,0,0.3); --primary-solid: #333333; }
+        
+        body { font-family: 'Baloo Bhai 2', cursive; font-weight: 700; background-color: var(--bg-body); color: var(--text-primary); margin: 0; padding: 0; transition: 0.4s ease; }
+        * { box-sizing: border-box; }
 
-        body {
-            font-family: 'Baloo Bhai 2', cursive; font-weight: 700;
-            background-color: var(--bg-body); color: var(--text-primary); margin: 0; padding: 0; transition: 0.4s ease;
-        }
+        .header { background-image: var(--primary-gradient); color: white; text-align: center; padding: 25px 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
+        .header h1 { margin: 0; font-size: 32px; color: var(--accent); font-weight: 800; display: inline-block; overflow: hidden; white-space: nowrap; border-right: 4px solid var(--accent); width: 0; animation: typing 3s steps(25, end) forwards, blink .75s step-end infinite; }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink { from, to { border-color: transparent } 50% { border-color: var(--accent); } }
 
-        /* --- Header & PERFECT Animation --- */
-        .header {
-            background-image: var(--primary-gradient); color: white; text-align: center; padding: 35px 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-        }
-        
-        .typing-container {
-            position: relative; display: inline-block; overflow: hidden;
-            /* Container strictly fits the text */
-        }
-        
-        /* Ghost text sets the exact width needed */
-        .ghost-text {
-            font-size: 46px; 
-            font-weight: 800; 
-            visibility: hidden; 
-            white-space: pre; /* Keeps exact spacing */
-        }
-        
-        /* Typing text animates perfectly inside container */
-        .typing-text {
-            position: absolute; top: 0; left: 0; margin: 0;
-            font-size: 46px; 
-            color: var(--accent); font-weight: 800; 
-            white-space: pre; /* Fixes word-wrap issues */
-            overflow: hidden; 
-            border-right: 4px solid var(--accent);
-            /* Speed changed from 3.5s to 5s, Steps increased to 30 for perfect reveal */
-            animation: typing 5s steps(30) infinite alternate, blink .75s step-end infinite;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
-        }
-        
-        @keyframes typing { 0% { width: 0; } 100% { width: 100%; } }
-        @keyframes blink { 50% { border-color: transparent; } }
-        
-        .header p { margin: 5px 0 0 0; font-size: 20px; font-weight: 600; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; background-color: var(--bg-card); border-bottom: 1px solid var(--border-color); }
+        select { font-family: 'Baloo Bhai 2', cursive; font-weight: 700; padding: 8px 15px; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; }
 
-        /* Top Bar */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: var(--bg-card); border-bottom: 2px solid var(--border-color); }
-        .top-bar select { font-family: 'Baloo Bhai 2', cursive; font-weight: 700; padding: 8px 15px; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; }
-
-        /* Layout */
-        .dashboard-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; align-items: start; }
+        .dashboard-container { max-width: 1250px; margin: 20px auto; padding: 0 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
         @media (max-width: 1000px) { .dashboard-container { grid-template-columns: 1fr; } }
         
-        .panel-card { background-color: var(--bg-card); padding: 30px; border-radius: 18px; box-shadow: var(--shadow-card); border: 1px solid var(--border-color); }
-        .section-title { font-size: 22px; color: var(--primary-solid); border-bottom: 3px solid var(--accent); padding-bottom: 8px; margin-bottom: 20px; margin-top: 0; display: flex; gap: 10px; }
+        .panel-card { background-color: var(--bg-card); padding: 25px; border-radius: 15px; box-shadow: var(--shadow-card); border: 1px solid var(--border-color); }
+        .section-title { font-size: 20px; color: var(--primary-solid); border-bottom: 2px solid var(--accent); padding-bottom: 5px; margin-bottom: 15px; margin-top: 0; }
         
-        /* Inputs & Buttons */
-        label { display: block; margin-bottom: 7px; font-size: 16px; color: var(--text-primary); }
-        input[type="file"], input[type="color"], input[type="range"] { width: 100%; margin-bottom: 18px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-body); cursor: pointer; }
+        label { display: block; margin-bottom: 5px; font-size: 15px; color: var(--text-primary); }
+        input[type="file"], input[type="color"], input[type="range"] { width: 100%; margin-bottom: 12px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-body); font-family: 'Baloo Bhai 2', cursive; font-weight: 700; cursor: pointer;}
         
-        button { font-family: 'Baloo Bhai 2', cursive; font-weight: 800; border: none; padding: 14px; margin: 8px 0; font-size: 17px; cursor: pointer; border-radius: 10px; width: 100%; transition: 0.3s; color: white; }
+        button { font-family: 'Baloo Bhai 2', cursive; font-weight: 800; border: none; padding: 12px; margin: 5px 0; font-size: 16px; cursor: pointer; border-radius: 8px; width: 100%; transition: 0.3s; color: white; }
         button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
         button:active { transform: scale(0.98); }
         
-        .btn-accent { background-color: var(--accent); color: black; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
+        .btn-accent { background-color: var(--accent); color: black; }
         .btn-danger { background-color: #d9534f; }
-        .btn-magic { background: linear-gradient(45deg, #ff007f, #7928ca); box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4); margin-bottom: 20px; }
+        .btn-primary { background-color: #007bff; }
+        .btn-magic { background: linear-gradient(45deg, #ff007f, #7928ca); box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4); margin-bottom: 15px; }
         .btn-success { background-color: #28a745; font-size: 18px; }
+        .btn-download { background-color: #17a2b8; }
 
-        .slider-group { margin-bottom: 15px; }
-        .slider-val { font-size: 16px; color: var(--primary-solid); font-weight: 800; }
+        .slider-group { margin-bottom: 10px; }
+        .slider-val { color: var(--primary-solid); font-weight: 800; }
 
-        /* Images */
-        #cropSection { display: none; margin-top: 15px; }
-        .crop-image-wrapper { width: 100%; max-height: 350px; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 15px; background: #eee;}
-        #previewImage { width: 160px; height: 210px; object-fit: cover; border: 1px solid var(--border-color); border-radius: 8px; display: block; margin: 20px auto; box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+        /* Camera Box */
+        #camBox { display: none; margin-bottom: 15px; border-radius: 8px; overflow: hidden; border: 2px solid var(--primary-solid); }
+        video { width: 100%; display: block; }
 
-        /* Overlay */
-        #statusOverlay { display: none; background-color: rgba(0,0,0,0.8); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1001; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 22px; }
-        .loader-spin { border: 5px solid #f3f3f3; border-top: 5px solid var(--accent); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Print Modal */
-        #printPreviewModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
-        .modal-box { background: white; padding: 30px; border-radius: 18px; text-align: center; }
+        /* Crop Box */
+        .crop-container { display: none; width: 100%; max-height: 350px; margin-bottom: 15px; border-radius: 8px; overflow: hidden; }
         
-        .paper-4x6-layout {
-            width: 6in; height: 4in; background: white; display: grid; 
-            grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); 
-            gap: 0.08in; padding: 0.12in; box-sizing: border-box; border: 2px dashed #000;
-        }
-        .paper-4x6-layout img { width: 100%; height: 100%; object-fit: cover; box-sizing: border-box; }
+        /* Preview */
+        .photo-wrapper { position: relative; width: 140px; height: 180px; margin: 10px auto; border: 2px solid black; background: white; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+        .photo-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        /* ========================================================
-           STRICT PRINT CSS - FIX FOR 6 BLANK PAGES
-           ======================================================== */
+        /* Loading */
+        #statusOverlay { display: none; background-color: rgba(0,0,0,0.85); position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1001; justify-content: center; align-items: center; flex-direction: column; color: white; font-size: 20px; text-align: center; padding: 20px;}
+        .loader-spin { border: 5px solid #444; border-top: 5px solid var(--accent); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .progress-bar-container { width: 80%; max-width: 400px; background: #333; height: 15px; border-radius: 10px; margin-top: 20px; overflow: hidden; display: none;}
+        .progress-bar-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.2s; }
+
+        /* Modal & Print Area */
+        #printPreviewModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; overflow-y: auto; padding: 20px;}
+        .modal-box { background: white; padding: 20px; border-radius: 15px; text-align: center; max-width: 95%; }
+        
+        /* Layouts */
+        .paper-4x6-layout { width: 6in; height: 4in; background: white; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0.08in; padding: 0.12in; box-sizing: border-box; border: 2px dashed #000; margin: 0 auto; }
+        .paper-a4-layout { width: 210mm; height: 297mm; background: white; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr); gap: 3mm; padding: 10mm; box-sizing: border-box; border: 2px dashed #000; margin: 0 auto; }
+
         @media print {
-            @page { size: 6in 4in landscape; margin: 0; }
-            html, body { 
-                margin: 0 !important; padding: 0 !important; 
-                width: 6in !important; height: 4in !important; 
-                overflow: hidden !important; background: white !important; 
-            }
-            body > * { display: none !important; }
-            #printPreviewModal { 
-                display: block !important; position: absolute !important; 
-                top: 0 !important; left: 0 !important; 
-                width: 6in !important; height: 4in !important; 
-                background: none !important; padding: 0 !important; margin: 0 !important; 
-            }
-            .modal-box { 
-                padding: 0 !important; margin: 0 !important; border: none !important; 
-                box-shadow: none !important; background: transparent !important; 
-                width: 100% !important; height: 100% !important; 
-            }
-            .modal-box h2, .modal-box div[style*="flex"] { display: none !important; }
-            .paper-4x6-layout { 
-                position: absolute !important; top: 0 !important; left: 0 !important; 
-                border: none !important; margin: 0 !important; 
-                width: 6in !important; height: 4in !important; 
-                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; 
-            }
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { position: absolute; left: 0; top: 0; border: none; }
+            .paper-4x6-layout, .paper-a4-layout { border: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; color-adjust: exact; }
+            @page { margin: 0; }
         }
+        body.printing-4x6 @media print { @page { size: 6in 4in landscape; margin: 0; } }
+        body.printing-a4 @media print { @page { size: A4 portrait; margin: 0; } }
+
+        /* Checkbox styling */
+        .check-box-label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: black; background: #f8f9fa; padding: 8px; border-radius: 5px; margin-bottom: 8px; border: 1px solid #ddd; }
+        .check-box-label input { width: 18px; height: 18px; margin: 0; }
+        .check-box-label:hover { background: #e2e6ea; }
     </style>
 </head>
 <body data-theme="light">
 
+<svg width="0" height="0" style="position:absolute;z-index:-1;">
+  <defs>
+    <filter id="sharpen-filter">
+      <feConvolveMatrix order="3 3" preserveAlpha="true" kernelMatrix="0 -1 0 -1 5 -1 0 -1 0"/>
+    </filter>
+  </defs>
+</svg>
+
 <div class="header">
-    <div class="typing-container">
-        <span class="ghost-text">અલ-અક્સા કોમ્પ્યુટર સેન્ટર</span>
-        <h1 class="typing-text">અલ-અક્સા કોમ્પ્યુટર સેન્ટર</h1>
-    </div>
-    <p>ધુણાદરા, ગુજરાત 388230 | મો. 9638730186</p>
+    <h1>અલ-અક્સા ફોટો સ્ટુડિયો </h1>
+    <p>ઢુણાદરા, ગુજરાત | મો. 9638730186</p>
 </div>
 
-<div class="top-bar panel-card">
-    <div style="display: flex; align-items: center; gap: 10px;">
-        <label style="margin:0;">🎨 થીમ બદલો:</label>
+<div class="top-bar">
+    <div style="display: flex; gap: 10px;">
+        <label style="margin:0;">🎨 થીમ:</label>
         <select id="themeSelect">
             <option value="light">ડિફોલ્ટ (Light)</option>
             <option value="dark">ડાર્ક મોડ (Dark)</option>
-            <option value="navy">નેવી બ્લુ (Navy)</option>
-            <option value="forest">લીલો (Forest)</option>
-            <option value="crimson">લાલ (Crimson)</option>
         </select>
     </div>
 </div>
 
 <div class="dashboard-container">
     <div class="panel-card">
-        <div class="section-title"><span style="color:var(--accent)">૧.</span> ફોટો ક્રોપિંગ</div>
-        <input type="file" id="fileInput" accept="image/*">
+        <div class="section-title"><span style="color:var(--accent)">૧.</span> કેમેરા અને ક્રોપિંગ</div>
         
-        <div id="cropSection">
-            <div class="crop-image-wrapper">
-                <img id="cropImg" src="" style="max-width: 100%;">
+        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <button class="btn-primary" id="btnStartCam" style="flex: 1;">📷 કેમેરા ચાલુ</button>
+            <div style="flex: 2; position: relative;">
+                <input type="file" id="fileInput" accept="image/*" style="margin: 0;">
             </div>
-            <button class="btn-accent" id="doCrop">✅ ક્રોપ ફાઇનલ કરો (OK)</button>
+        </div>
+
+        <div id="camBox">
+            <video id="webcamVideo" autoplay playsinline></video>
+            <button class="btn-danger" id="btnCapture" style="margin:0; border-radius:0;">📸 ફોટો પાડો</button>
+        </div>
+
+        <div id="cropBox" class="crop-container">
+            <img id="cropImg" src="" style="max-width: 100%;">
+            <button class="btn-accent" id="doCrop">✂️ પાસપોર્ટ સાઇઝ ક્રોપ કરો</button>
         </div>
     </div>
 
     <div class="panel-card">
         <div class="section-title"><span style="color:var(--accent)">૨.</span> AI એડિટિંગ & કલર</div>
         
-        <button class="btn-danger" id="doRemoveBg">🪄 ફાસ્ટ Background કાઢો (Free)</button>
-        
+        <button class="btn-danger" id="doRemoveBg">🪄 HD Background કાઢો (Free)</button>
         <label>પાછળનો કલર (Background Color):</label>
         <input type="color" id="pickColor" value="#ffffff">
 
         <button class="btn-magic" id="autoEnhance">✨ ઓટો એન્હાન્સ (Magic)</button>
 
-        <div class="slider-group">
-            <label>બોર્ડર (Outline): <span id="borderRVal" class="slider-val">2</span>px</label>
+        <label class="check-box-label">
+            <input type="checkbox" id="filterSharpen"> ✨ ઝાંખો ફોટો ક્લિયર કરો (Pixel Sharpen)
+        </label>
+
+        <label class="check-box-label">
+            <input type="checkbox" id="filterBW"> ⚫ બ્લેક એન્ડ વ્હાઇટ (B&W)
+        </label>
+
+        <div class="slider-group" style="margin-top: 15px;">
+            <label>બોર્ડર: <span id="borderRVal" class="slider-val">2</span>px</label>
             <input type="range" id="borderR" min="0" max="10" value="2">
         </div>
         <div class="slider-group">
-            <label>બ્રાઇટનેસ (Brightness): <span id="brightVal" class="slider-val">100</span>%</label>
+            <label>બ્રાઇટનેસ: <span id="brightVal" class="slider-val">100</span>%</label>
             <input type="range" id="bright" min="50" max="150" value="100">
         </div>
         <div class="slider-group">
-            <label>કોન્ટ્રાસ્ટ (Contrast): <span id="contVal" class="slider-val">100</span>%</label>
+            <label>કોન્ટ્રાસ્ટ: <span id="contVal" class="slider-val">100</span>%</label>
             <input type="range" id="contrast" min="50" max="150" value="100">
         </div>
         <div class="slider-group">
-            <label>કલર (Saturation): <span id="satVal" class="slider-val">100</span>%</label>
+            <label>કલર: <span id="satVal" class="slider-val">100</span>%</label>
             <input type="range" id="saturation" min="0" max="200" value="100">
         </div>
     </div>
 
-    <div class="panel-card" style="text-align: center;">
+    <div class="panel-card">
         <div class="section-title"><span style="color:var(--accent)">૩.</span> પ્રિન્ટ આઉટપુટ</div>
-        <img id="previewImage" src="https://via.placeholder.com/160x210?text=Select+Photo">
+        
+        <div class="photo-wrapper" id="previewWrapper">
+            <img id="previewImage" src="https://via.placeholder.com/140x180?text=Select+Photo">
+        </div>
+        <button class="btn-download" id="btnDownload">⬇️ સિંગલ ફોટો ડાઉનલોડ</button>
+
+        <label style="margin-top: 15px;">પેપર સાઇઝ પસંદ કરો:</label>
+        <select id="paperSizeSelect" style="width: 100%; margin-bottom: 15px;">
+            <option value="4x6">4x6 ઇંચ પેપર (૮ ફોટા)</option>
+            <option value="a4">A4 સાઇઝ પેપર (૩૦ ફોટા)</option>
+        </select>
+
         <button class="btn-success" id="openPreview">👀 પ્રિન્ટ પ્રિવ્યુ જુઓ</button>
     </div>
 </div>
 
 <div id="printPreviewModal">
     <div class="modal-box">
-        <h2 style="color:#333; margin-top:0;">4x6 પેપર પ્રિવ્યુ (8 ફોટા)</h2>
+        <h2 style="color:#333; margin-top:0;">પેપર પ્રિવ્યુ</h2>
         <div id="printArea" class="paper-4x6-layout"></div>
         <div style="display:flex; gap:15px; margin-top:25px; justify-content: center;">
             <button class="btn-danger" style="width: 150px;" onclick="document.getElementById('printPreviewModal').style.display='none'">❌ કેન્સલ</button>
@@ -248,133 +202,192 @@
 
 <div id="statusOverlay">
     <div class="loader-spin"></div>
-    <span id="loadingText">⏳ AI મોડલ સેટ થઈ રહ્યું છે (ફક્ત પહેલી વાર)...</span>
+    <span id="loadingText" style="font-weight: 800; color: var(--accent);">⏳ પ્રોસેસિંગ ચાલુ છે...</span>
+    <div class="progress-bar-container" id="progressContainer"><div class="progress-bar-fill" id="progressBar"></div></div>
+    <p id="progressPercent" style="font-size: 16px; font-weight: bold; margin-top: 10px; display: none;">0%</p>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-<script>
-    // --- Google MediaPipe Initialization (Lightweight & Superfast) ---
-    const selfieSegmentation = new SelfieSegmentation({locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${file}`;
-    }});
-    selfieSegmentation.setOptions({ modelSelection: 1 }); // 1 = Faster Landscape Model
-    
-    // Process Background Removal Result
-    selfieSegmentation.onResults((results) => {
-        const canvas = document.createElement('canvas');
-        canvas.width = results.image.width;
-        canvas.height = results.image.height;
-        const ctx = canvas.getContext('2d');
-
-        ctx.drawImage(results.segmentationMask, 0, 0, canvas.width, canvas.height);
-        ctx.globalCompositeOperation = 'source-in';
-        ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
-
-        currentImg = canvas.toDataURL('image/png');
-        previewImage.src = currentImg;
-
-        document.getElementById('statusOverlay').style.display = "none";
-        previewImgStyles(1);
-    });
+<script type="module">
+    import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/+esm';
 
     let cropper;
     let currentImg = "";
+    let streamRef = null;
     const fileInput = document.getElementById('fileInput');
     const previewImage = document.getElementById('previewImage');
-    const cropSection = document.getElementById('cropSection');
+    const previewWrapper = document.getElementById('previewWrapper');
 
-    // Theme Switcher
     document.getElementById('themeSelect').onchange = (e) => document.body.setAttribute('data-theme', e.target.value);
 
-    // Live Slider Updates
+    // Live Sliders & Checkboxes
     const updateSlidVals = () => {
         document.getElementById('borderRVal').innerText = document.getElementById('borderR').value;
         document.getElementById('brightVal').innerText = document.getElementById('bright').value;
         document.getElementById('contVal').innerText = document.getElementById('contrast').value;
         document.getElementById('satVal').innerText = document.getElementById('saturation').value;
     };
-    
     ['borderR', 'bright', 'contrast', 'saturation'].forEach(id => {
         document.getElementById(id).oninput = () => { updateSlidVals(); updateStyles(); };
     });
+    
     document.getElementById('pickColor').oninput = updateStyles;
+    document.getElementById('filterBW').onchange = updateStyles;
+    document.getElementById('filterSharpen').onchange = updateStyles;
 
     // Auto Enhance
     document.getElementById('autoEnhance').onclick = () => {
-        document.getElementById('bright').value = 110;
-        document.getElementById('contrast').value = 115;
+        document.getElementById('bright').value = 110; 
+        document.getElementById('contrast').value = 115; 
         document.getElementById('saturation').value = 120;
+        document.getElementById('filterBW').checked = false;
+        document.getElementById('filterSharpen').checked = true; // Auto enhance also sharpens
         updateSlidVals(); updateStyles();
     };
 
-    // Crop Image
-    fileInput.onchange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            document.getElementById('cropImg').src = URL.createObjectURL(file);
-            cropSection.style.display = "block"; 
-            if (cropper) cropper.destroy();
-            cropper = new Cropper(document.getElementById('cropImg'), { aspectRatio: 3.5 / 4.5, viewMode: 1 });
-        }
+    // --- Webcam Logic ---
+    document.getElementById('btnStartCam').onclick = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            streamRef = stream;
+            document.getElementById('webcamVideo').srcObject = stream;
+            document.getElementById('camBox').style.display = 'block';
+        } catch (err) { alert("કેમેરા ચાલુ કરવામાં નિષ્ફળતા!"); }
     };
 
+    document.getElementById('btnCapture').onclick = () => {
+        const video = document.getElementById('webcamVideo');
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        
+        if(streamRef) streamRef.getTracks().forEach(track => track.stop());
+        document.getElementById('camBox').style.display = 'none';
+
+        initCropper(canvas.toDataURL('image/png'));
+    };
+
+    // Upload Logic
+    fileInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (file) initCropper(URL.createObjectURL(file));
+    };
+
+    function initCropper(imgSrc) {
+        document.getElementById('cropImg').src = imgSrc;
+        document.getElementById('cropBox').style.display = "block";
+        if (cropper) cropper.destroy();
+        cropper = new Cropper(document.getElementById('cropImg'), { aspectRatio: 3.5 / 4.5, viewMode: 1 });
+    }
+
+    // Crop
     document.getElementById('doCrop').onclick = () => {
-        if(!cropper) return;
         currentImg = cropper.getCroppedCanvas({ width: 350, height: 450 }).toDataURL("image/png");
         previewImage.src = currentImg;
-        cropSection.style.display = "none"; 
+        document.getElementById('cropBox').style.display = "none";
         updateStyles();
     };
 
-    // Trigger MediaPipe Fast Background Removal
+    // Background Remove
     document.getElementById('doRemoveBg').onclick = async () => {
-        if (!currentImg) return alert("કૃપા કરીને પહેલા ફોટો અપલોડ કરી 'ક્રોપ ફાઇનલ કરો' બટન દબાવો.");
-        
-        document.getElementById('loadingText').innerText = "✨ સેકન્ડોમાં બેકગ્રાઉન્ડ દૂર થઈ રહ્યું છે...";
+        if (!currentImg) return alert("પહેલા ફોટો ક્રોપ કરો!");
         document.getElementById('statusOverlay').style.display = "flex";
+        document.getElementById('progressContainer').style.display = "block";
+        document.getElementById('progressPercent').style.display = "block";
+        document.getElementById('loadingText').innerText = "⏳ AI મોડલ ડાઉનલોડ થઈ રહ્યું છે...";
         previewImgStyles(0.4);
 
-        const imgEl = new Image();
-        imgEl.src = currentImg;
-        imgEl.onload = async () => {
-            await selfieSegmentation.send({image: imgEl});
-        };
+        try {
+            const response = await fetch(currentImg); const blob = await response.blob();
+            const config = { publicPath: "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.5/dist/", progress: (k, c, t) => {
+                if (t > 0) {
+                    const p = Math.round((c / t) * 100);
+                    document.getElementById('progressBar').style.width = p + "%";
+                    document.getElementById('progressPercent').innerText = p + "%";
+                }
+            }};
+            const resultBlob = await imglyRemoveBackground(blob, config);
+            currentImg = URL.createObjectURL(resultBlob);
+            previewImage.src = currentImg;
+        } catch (e) { alert("ભૂલ આવી!"); } finally {
+            document.getElementById('statusOverlay').style.display = "none";
+            document.getElementById('progressContainer').style.display = "none";
+            document.getElementById('progressPercent').style.display = "none";
+            previewImgStyles(1);
+        }
     };
 
+    // Style Updates
     function updateStyles() {
         if (!currentImg) return;
-        previewImage.style.backgroundColor = document.getElementById('pickColor').value;
-        previewImage.style.border = `${document.getElementById('borderR').value}px solid black`;
+        previewWrapper.style.backgroundColor = document.getElementById('pickColor').value;
+        previewWrapper.style.border = `${document.getElementById('borderR').value}px solid black`;
         previewImgStyles(1);
     }
     
-    function previewImgStyles(opacityVal) {
+    function previewImgStyles(op) {
         if (!currentImg) return;
-        const b = document.getElementById('bright').value;
-        const c = document.getElementById('contrast').value;
+        const b = document.getElementById('bright').value; 
+        const c = document.getElementById('contrast').value; 
         const s = document.getElementById('saturation').value;
-        previewImage.style.filter = `brightness(${b}%) contrast(${c}%) saturate(${s}%) opacity(${opacityVal})`;
+        
+        let filterString = `brightness(${b}%) contrast(${c}%) saturate(${s}%) opacity(${op})`;
+        
+        if (document.getElementById('filterBW').checked) { filterString += " grayscale(100%)"; }
+        if (document.getElementById('filterSharpen').checked) { filterString += " url(#sharpen-filter)"; }
+        
+        previewImage.style.filter = filterString;
     }
 
-    // Modal Grid Generation
+    // Modal Grid (4x6 or A4)
     document.getElementById('openPreview').onclick = () => {
-        if (!currentImg) return alert("કૃપા કરીને પહેલા ફોટો તૈયાર કરો.");
+        if (!currentImg) return alert("ફોટો તૈયાર કરો!");
         const area = document.getElementById('printArea');
         area.innerHTML = "";
         
-        const b = document.getElementById('bright').value;
-        const c = document.getElementById('contrast').value;
-        const s = document.getElementById('saturation').value;
+        const paperType = document.getElementById('paperSizeSelect').value;
+        const count = paperType === '4x6' ? 8 : 30;
+        
+        area.className = paperType === '4x6' ? 'paper-4x6-layout' : 'paper-a4-layout';
+        document.body.className = paperType === '4x6' ? 'printing-4x6' : 'printing-a4';
 
-        for (let i = 0; i < 8; i++) {
-            const img = document.createElement('img');
-            img.src = currentImg;
-            img.style.backgroundColor = document.getElementById('pickColor').value;
-            img.style.border = `${document.getElementById('borderR').value}px solid black`;
-            img.style.filter = `brightness(${b}%) contrast(${c}%) saturate(${s}%)`;
-            area.appendChild(img);
+        for (let i = 0; i < count; i++) {
+            const clone = previewWrapper.cloneNode(true);
+            clone.id = ""; clone.style.margin = "0"; clone.style.width = "100%"; clone.style.height = "100%";
+            area.appendChild(clone);
         }
         document.getElementById('printPreviewModal').style.display = "flex";
+    };
+
+    // Download Single Photo
+    document.getElementById('btnDownload').onclick = () => {
+        if (!currentImg) return alert("ફોટો તૈયાર કરો!");
+        const canvas = document.createElement('canvas'); canvas.width = 350; canvas.height = 450; const ctx = canvas.getContext('2d');
+        ctx.fillStyle = document.getElementById('pickColor').value; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        const b = document.getElementById('bright').value; 
+        const c = document.getElementById('contrast').value; 
+        const s = document.getElementById('saturation').value;
+        
+        let filterString = `brightness(${b}%) contrast(${c}%) saturate(${s}%)`;
+        if (document.getElementById('filterBW').checked) { filterString += " grayscale(100%)"; }
+        if (document.getElementById('filterSharpen').checked) { filterString += " url(#sharpen-filter)"; }
+        
+        ctx.filter = filterString;
+        
+        const img = new Image();
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            
+            const bw = parseInt(document.getElementById('borderR').value) * 2.5;
+            if (bw > 0) { ctx.filter = 'none'; ctx.lineWidth = bw; ctx.strokeStyle = 'black'; ctx.strokeRect(bw/2, bw/2, 350 - bw, 450 - bw); }
+            
+            const link = document.createElement('a'); 
+            link.download = `Al-Aksha_Passport.jpg`; 
+            link.href = canvas.toDataURL('image/jpeg', 1.0); 
+            link.click();
+        };
+        img.src = currentImg;
     };
 </script>
 </body>
