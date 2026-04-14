@@ -63,7 +63,7 @@
         @media (max-width: 900px) { .dashboard-container { grid-template-columns: 1fr; } }
         
         /* --- PREMIUM CARDS --- */
-        .panel-card { background-color: var(--bg-card); padding: 25px; border-radius: 24px; box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .panel-card { background-color: var(--bg-card); padding: 25px; border-radius: 24px; box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative;}
         .panel-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         
         .section-title { font-size: 20px; color: var(--text-primary); padding-bottom: 12px; margin-bottom: 20px; border-bottom: 2px dashed var(--border-color); display: flex; align-items: center; gap: 10px; font-weight: 800; }
@@ -124,6 +124,12 @@
         .photo-wrapper { position: relative; width: 140px; height: 180px; margin: 15px auto; border: 3px solid #1e293b; background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYsZcAY9VAOMamBQBqM2MGiDIQAAl/sHAtV442AAAAAASUVORK5CYII='); overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 6px; }
         .photo-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+        /* --- UNDO/REDO BUTTONS --- */
+        .history-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
+        .history-btn { background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-primary); padding: 8px 15px; border-radius: 50px; cursor: pointer; font-weight: 700; transition: 0.3s; display: flex; align-items: center; gap: 6px; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .history-btn:hover:not(:disabled) { background: var(--primary-solid); color: white; border-color: var(--primary-solid); }
+        .history-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
         /* --- FLOATING MAC-STYLE ACTION PANEL --- */
         .action-panel-wrapper { position: fixed; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 9999; pointer-events: none; padding: 0 15px;}
         .action-panel {
@@ -167,17 +173,24 @@
         .print-alert { background: #fffbeb; color: #b45309; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 700; border: 2px solid #fde68a; font-size: 16px; text-align: left; display: flex; align-items: center; gap: 15px; }
         .print-alert i { font-size: 30px; color: #f59e0b; }
         
-        .paper-4x6-layout { width: 6in; height: 4in; background: white; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0.08in; padding: 0.12in; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
-        .paper-a4-layout { width: 210mm; height: 297mm; background: white; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr); gap: 3mm; padding: 10mm; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
+        /* 100% WHITE BACKGROUND FIX FOR PRINT */
+        .paper-4x6-layout { width: 6in; height: 4in; background: white !important; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0.08in; padding: 0.12in; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
+        .paper-a4-layout { width: 210mm; height: 297mm; background: white !important; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr); gap: 3mm; padding: 10mm; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
 
         @media print {
             body * { display: none !important; }
             body, html { margin: 0 !important; padding: 0 !important; background: white !important; }
+            
+            /* Hide UI elements, show only print area */
             #printPreviewModal, #printPreviewModal * { display: block !important; visibility: visible !important; }
             #printPreviewModal h2, #printPreviewModal button, .print-alert { display: none !important; }
-            #printPreviewModal { position: absolute !important; left: 0; top: 0; width: 100%; height: 100%; background: none !important; padding: 0 !important; }
-            .modal-box { padding: 0 !important; box-shadow: none !important; border: none !important; max-width: none !important; width: 100%; }
-            #printArea { display: grid !important; position: absolute; left: 0; top: 0; margin: 0 !important; border: none !important; }
+            
+            /* Remove all background colors from body/wrapper during print */
+            #printPreviewModal { position: absolute !important; left: 0; top: 0; width: 100%; height: 100%; background: white !important; padding: 0 !important; }
+            .modal-box { padding: 0 !important; box-shadow: none !important; border: none !important; max-width: none !important; width: 100%; background: white !important;}
+            
+            /* Core print grid */
+            #printArea { display: grid !important; position: absolute; left: 0; top: 0; margin: 0 !important; border: none !important; background: white !important; }
             
             /* FHD PRINT RENDERING FIX */
             #printArea img, .photo-wrapper, .photo-wrapper img { 
@@ -295,6 +308,11 @@
             ૨. કલર અને ફિલ્ટર્સ
         </div>
         
+        <div class="history-controls">
+            <button id="btnUndo" class="history-btn" disabled title="Ctrl + Z"><i class="fa-solid fa-rotate-left"></i> Undo</button>
+            <button id="btnRedo" class="history-btn" disabled title="Ctrl + Y"><i class="fa-solid fa-rotate-right"></i> Redo</button>
+        </div>
+
         <div class="color-picker-wrapper">
             <label class="input-label" style="margin:0; flex:1;"><i class="fa-solid fa-fill-drip" style="color: var(--primary-solid);"></i> બેકગ્રાઉન્ડ કલર:</label>
             <input type="color" id="pickColor" value="#ffffff">
@@ -429,7 +447,7 @@
             <i class="fa-solid fa-triangle-exclamation"></i>
             <div>
                 <b style="font-size: 18px; color: #92400e;">FHD અલ્ટ્રા પ્રિન્ટ માટે અગત્યની સૂચના:</b><br>
-                નીચે 'પ્રિન્ટ ફાઇનલ' દબાવ્યા પછી જે નવું બોક્સ ખુલે, તેમાં <b>More Settings / Preferences</b> માં જઈને <b>Paper Type: "Photo Paper"</b> અને <b>Quality: "High / Best"</b> સિલેક્ટ કરવાનું ચૂકશો નહિ. તો જ પ્રિન્ટ ફાટશે નહિ.
+                નીચે 'પ્રિન્ટ ફાઇનલ' દબાવ્યા પછી જે નવું બોક્સ ખુલે, તેમાં <b>More Settings / Preferences / System Dialog</b> માં જઈને <b>Paper Type: "Photo Paper"</b> અને <b>Quality: "High / Best"</b> સિલેક્ટ કરવાનું ચૂકશો નહિ. તો જ પ્રિન્ટ ફાટશે નહિ.
             </div>
         </div>
 
@@ -515,18 +533,95 @@
     document.getElementById('themeSelect').onchange = (e) => document.body.setAttribute('data-theme', e.target.value);
 
     // ==========================================
-    // 1. MAIN PASSPORT PHOTO LOGIC (FHD)
+    // 1. MAIN PASSPORT PHOTO LOGIC (FHD & UNDO/REDO)
     // ==========================================
     let cropper;
     let currentBlob = null;
     let currentImg = "";
     let streamRef = null;
     let useFrontCamera = true; 
+    
+    // History arrays for Undo/Redo
+    let historyState = [];
+    let currentIndex = -1;
 
     const fileInput = document.getElementById('fileInput');
     const previewImage = document.getElementById('previewImage');
     const previewWrapper = document.getElementById('previewWrapper');
     const webcamVideo = document.getElementById('webcamVideo');
+    
+    const btnUndo = document.getElementById('btnUndo');
+    const btnRedo = document.getElementById('btnRedo');
+
+    // Function to save current state to history
+    function saveState() {
+        const state = {
+            blob: currentBlob,
+            imgSrc: currentImg,
+            color: document.getElementById('pickColor').value,
+            sharpen: document.getElementById('filterSharpen').checked,
+            bw: document.getElementById('filterBW').checked,
+            borderR: document.getElementById('borderR').value,
+            bright: document.getElementById('bright').value,
+            contrast: document.getElementById('contrast').value
+        };
+        
+        // Remove future states if we are not at the end of the array
+        if (currentIndex < historyState.length - 1) {
+            historyState = historyState.slice(0, currentIndex + 1);
+        }
+        
+        historyState.push(state);
+        currentIndex++;
+        updateHistoryButtons();
+    }
+
+    function updateHistoryButtons() {
+        btnUndo.disabled = currentIndex <= 0;
+        btnRedo.disabled = currentIndex >= historyState.length - 1;
+    }
+
+    function applyState(state) {
+        currentBlob = state.blob;
+        currentImg = state.imgSrc;
+        previewImage.src = currentImg;
+        
+        document.getElementById('pickColor').value = state.color;
+        document.getElementById('filterSharpen').checked = state.sharpen;
+        document.getElementById('filterBW').checked = state.bw;
+        document.getElementById('borderR').value = state.borderR;
+        document.getElementById('bright').value = state.bright;
+        document.getElementById('contrast').value = state.contrast;
+        
+        updateSlidVals();
+        updateStyles(false); // Update without saving a new state
+        updateHistoryButtons();
+    }
+
+    btnUndo.onclick = () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            applyState(historyState[currentIndex]);
+        }
+    };
+
+    btnRedo.onclick = () => {
+        if (currentIndex < historyState.length - 1) {
+            currentIndex++;
+            applyState(historyState[currentIndex]);
+        }
+    };
+
+    // Keyboard Shortcuts for Undo/Redo
+    document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.key === 'z') {
+            event.preventDefault();
+            btnUndo.click();
+        } else if (event.ctrlKey && event.key === 'y') {
+            event.preventDefault();
+            btnRedo.click();
+        }
+    });
 
     const updateSlidVals = () => {
         document.getElementById('borderRVal').innerText = document.getElementById('borderR').value;
@@ -535,19 +630,26 @@
     };
     
     ['borderR', 'bright', 'contrast'].forEach(id => {
-        document.getElementById(id).oninput = () => { updateSlidVals(); updateStyles(); };
+        document.getElementById(id).oninput = () => { updateSlidVals(); updateStyles(true); };
     });
 
-    document.getElementById('pickColor').oninput = updateStyles;
-    document.getElementById('filterBW').onchange = updateStyles;
-    document.getElementById('filterSharpen').onchange = updateStyles;
+    // We only want to save state on 'change' (when user finishes interacting), not 'input' (every millisecond) for color/sliders to avoid history bloat.
+    document.getElementById('pickColor').onchange = () => { updateStyles(true); };
+    document.getElementById('pickColor').oninput = () => { updateStyles(false); }; // Live preview, no save
+    
+    ['borderR', 'bright', 'contrast'].forEach(id => {
+        document.getElementById(id).onchange = () => { saveState(); };
+    });
+
+    document.getElementById('filterBW').onchange = () => { updateStyles(true); };
+    document.getElementById('filterSharpen').onchange = () => { updateStyles(true); };
 
     document.getElementById('btnActionMagic').onclick = () => {
         document.getElementById('bright').value = 110; 
         document.getElementById('contrast').value = 115; 
         document.getElementById('filterBW').checked = false;
         document.getElementById('filterSharpen').checked = true;
-        updateSlidVals(); updateStyles();
+        updateSlidVals(); updateStyles(true);
     };
 
     async function startCamera() {
@@ -592,7 +694,7 @@
         cropper = new Cropper(document.getElementById('cropImg'), { aspectRatio: 3.5 / 4.5, viewMode: 1 });
     }
 
-    // FHD CROP RESOLUTION (900x1157 - Approx 300DPI for 3.5x4.5cm) - Optimized for print spooler
+    // FHD CROP RESOLUTION (900x1157)
     document.getElementById('btnActionCrop').onclick = () => {
         if(!cropper) return alert("કૃપા કરીને પહેલા ફોટો અપલોડ કરો.");
         cropper.getCroppedCanvas({ width: 900, height: 1157, imageSmoothingEnabled: true, imageSmoothingQuality: 'high' }).toBlob((blob) => {
@@ -601,7 +703,12 @@
             previewImage.src = currentImg;
             previewWrapper.style.backgroundColor = "transparent";
             document.getElementById('cropBox').style.display = "none";
-            updateStyles();
+            
+            // Initial state save after first crop
+            historyState = [];
+            currentIndex = -1;
+            updateStyles(true); 
+            
         }, 'image/jpeg', 1.0);
     };
 
@@ -624,6 +731,7 @@
                 currentBlob = resultBlob; currentImg = URL.createObjectURL(resultBlob); previewImage.src = currentImg;
                 document.getElementById('loadingText').innerHTML = "<i class='fa-solid fa-check'></i> 100% કટિંગ સફળ!";
                 checkCredits(); 
+                updateStyles(true); // Save state after BG removal
             } else {
                 const errorData = await response.json();
                 let errorMsg = response.statusText;
@@ -631,7 +739,7 @@
                 alert("Remove.bg માં ભૂલ આવી: " + errorMsg);
             }
         } catch (error) { alert("ઇન્ટરનેટ કનેક્શન તપાસો! \nError: " + error.message); 
-        } finally { setTimeout(() => { document.getElementById('statusOverlay').style.display = "none"; updateStyles(); }, 500); }
+        } finally { setTimeout(() => { document.getElementById('statusOverlay').style.display = "none"; }, 500); }
     };
 
     document.getElementById('btnActionEnhance').onclick = () => {
@@ -650,14 +758,15 @@
                 canvas.toBlob((blob) => {
                     currentBlob = blob; currentImg = URL.createObjectURL(blob); previewImage.src = currentImg;
                     document.getElementById('statusOverlay').style.display = "none";
-                    document.getElementById('filterSharpen').checked = true; updateStyles();
+                    document.getElementById('filterSharpen').checked = true; 
+                    updateStyles(true); // Save state after enhance
                 }, 'image/jpeg', 1.0);
             };
             img.src = currentImg;
         }, 300); 
     };
 
-    function updateStyles() {
+    function updateStyles(shouldSaveState = false) {
         if (!currentImg) return;
         previewWrapper.style.backgroundColor = document.getElementById('pickColor').value;
         previewWrapper.style.border = `${document.getElementById('borderR').value}px solid black`;
@@ -667,6 +776,8 @@
         if (document.getElementById('filterBW').checked) { filterString += " grayscale(100%)"; }
         if (document.getElementById('filterSharpen').checked) { filterString += " url(#sharpen-filter)"; }
         previewImage.style.filter = filterString;
+        
+        if (shouldSaveState) saveState();
     }
 
     document.getElementById('btnActionPrint').onclick = () => {
