@@ -165,7 +165,7 @@
         .loader-spin { border: 6px solid rgba(255,255,255,0.1); border-top: 6px solid var(--accent); border-radius: 50%; width: 70px; height: 70px; animation: spin 1s linear infinite; margin-bottom: 25px; box-shadow: 0 0 20px rgba(251, 191, 36, 0.3); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Print CSS - FHD Optimization */
+        /* Print CSS - FHD Optimization & Rounded Corners */
         #printPreviewModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.95); z-index: 10000; justify-content: center; align-items: center; flex-direction: column; overflow-y: auto; padding: 20px; backdrop-filter: blur(10px);}
         .modal-box { background: white; padding: 25px; border-radius: 20px; text-align: center; max-width: 95%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
         
@@ -239,7 +239,7 @@
 <div class="api-box">
     <div class="api-input-group">
         <label><i class="fa-solid fa-key" style="color:var(--primary-solid);"></i> Remove.bg Key:</label>
-        <input type="text" id="liveApiKeyInput" class="api-input" placeholder="અહીં API Key નાખો">
+        <input type="text" id="liveApiKeyInput" class="api-input" placeholder="અહીં API Key નાખો" value="eGJvRcs1VeVaSyiQnk87iwHU">
     </div>
     
     <div style="display: flex; gap: 15px; justify-content: center; width: 100%; flex-wrap: wrap;">
@@ -491,13 +491,12 @@
     // API KEY & CREDIT CHECK LOGIC
     // ==========================================
     window.onload = () => {
-        const savedKey = localStorage.getItem("savedApiKey");
-        if (savedKey) {
-            document.getElementById('liveApiKeyInput').value = savedKey;
-        } else {
-            document.getElementById('liveApiKeyInput').value = DEFAULT_API_KEY;
+        let savedKey = localStorage.getItem("savedApiKey");
+        if (!savedKey || savedKey === "") {
+            savedKey = DEFAULT_API_KEY;
             localStorage.setItem("savedApiKey", DEFAULT_API_KEY);
         }
+        document.getElementById('liveApiKeyInput').value = savedKey;
         checkCredits();
     };
 
