@@ -173,12 +173,10 @@
         .print-alert { background: #fffbeb; color: #b45309; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 700; border: 2px solid #fde68a; font-size: 16px; text-align: left; display: flex; align-items: center; gap: 15px; }
         .print-alert i { font-size: 30px; color: #f59e0b; }
         
-        .paper-4x6-layout { width: 6in; height: 4in; background: white; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0.08in; padding: 0.12in; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
-        .paper-a4-layout { width: 210mm; height: 297mm; background: white; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr); gap: 3mm; padding: 10mm; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
+        /* 100% WHITE BACKGROUND FIX FOR PRINT */
+        .paper-4x6-layout { width: 6in; height: 4in; background: white !important; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0.08in; padding: 0.12in; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
+        .paper-a4-layout { width: 210mm; height: 297mm; background: white !important; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr); gap: 3mm; padding: 10mm; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
 
-        /* =======================================================
-           !!! PRINT FIX: REMOVE SHADOWS & OUTSIDE BACKGROUNDS !!! 
-           ======================================================= */
         @media print {
             body * { display: none !important; }
             body, html { margin: 0 !important; padding: 0 !important; background: white !important; }
@@ -198,15 +196,17 @@
             /* KILL ALL SHADOWS AND BACKGROUND GRIDS */
             * { box-shadow: none !important; text-shadow: none !important; }
             
+            /* ROUNDED CORNERS FOR PRINT */
             .photo-wrapper { 
                 box-shadow: none !important; 
                 background-image: none !important; /* Removes the checkerboard */
-                border-radius: 0 !important; 
+                border-radius: 8px !important; /* <--- ROUNDED CORNERS ADDED HERE */
                 margin: 0 !important;
+                overflow: hidden !important; /* Ensures the image respects the rounded border */
             }
             .photo-wrapper img { 
                 box-shadow: none !important; 
-                border-radius: 0 !important; 
+                border-radius: 8px !important; /* <--- ROUNDED CORNERS ADDED HERE */
             }
             
             /* FHD PRINT RENDERING FIX */
@@ -707,6 +707,7 @@
         cropper = new Cropper(document.getElementById('cropImg'), { aspectRatio: 3.5 / 4.5, viewMode: 1 });
     }
 
+    // FHD CROP RESOLUTION (900x1157)
     document.getElementById('btnActionCrop').onclick = () => {
         if(!cropper) return alert("કૃપા કરીને પહેલા ફોટો અપલોડ કરો.");
         cropper.getCroppedCanvas({ width: 900, height: 1157, imageSmoothingEnabled: true, imageSmoothingQuality: 'high' }).toBlob((blob) => {
