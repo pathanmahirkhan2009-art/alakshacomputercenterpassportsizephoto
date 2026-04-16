@@ -173,10 +173,12 @@
         .print-alert { background: #fffbeb; color: #b45309; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 700; border: 2px solid #fde68a; font-size: 16px; text-align: left; display: flex; align-items: center; gap: 15px; }
         .print-alert i { font-size: 30px; color: #f59e0b; }
         
-        /* 100% WHITE BACKGROUND FIX FOR PRINT */
-        .paper-4x6-layout { width: 6in; height: 4in; background: white !important; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0.08in; padding: 0.12in; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
-        .paper-a4-layout { width: 210mm; height: 297mm; background: white !important; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr); gap: 3mm; padding: 10mm; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
+        .paper-4x6-layout { width: 6in; height: 4in; background: white; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: 0.08in; padding: 0.12in; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
+        .paper-a4-layout { width: 210mm; height: 297mm; background: white; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(6, 1fr); gap: 3mm; padding: 10mm; box-sizing: border-box; border: 2px dashed #cbd5e1; margin: 0 auto; }
 
+        /* =======================================================
+           !!! PRINT FIX: REMOVE SHADOWS & OUTSIDE BACKGROUNDS !!! 
+           ======================================================= */
         @media print {
             body * { display: none !important; }
             body, html { margin: 0 !important; padding: 0 !important; background: white !important; }
@@ -186,11 +188,26 @@
             #printPreviewModal h2, #printPreviewModal button, .print-alert { display: none !important; }
             
             /* Remove all background colors from body/wrapper during print */
-            #printPreviewModal { position: absolute !important; left: 0; top: 0; width: 100%; height: 100%; background: white !important; padding: 0 !important; }
+            #printPreviewModal { position: absolute !important; left: 0; top: 0; width: 100%; height: 100%; background: white !important; padding: 0 !important; backdrop-filter: none !important; }
             .modal-box { padding: 0 !important; box-shadow: none !important; border: none !important; max-width: none !important; width: 100%; background: white !important;}
             
             /* Core print grid */
             #printArea { display: grid !important; position: absolute; left: 0; top: 0; margin: 0 !important; border: none !important; background: white !important; }
+            .paper-4x6-layout, .paper-a4-layout { border: none !important; background: white !important; }
+
+            /* KILL ALL SHADOWS AND BACKGROUND GRIDS */
+            * { box-shadow: none !important; text-shadow: none !important; }
+            
+            .photo-wrapper { 
+                box-shadow: none !important; 
+                background-image: none !important; /* Removes the checkerboard */
+                border-radius: 0 !important; 
+                margin: 0 !important;
+            }
+            .photo-wrapper img { 
+                box-shadow: none !important; 
+                border-radius: 0 !important; 
+            }
             
             /* FHD PRINT RENDERING FIX */
             #printArea img, .photo-wrapper, .photo-wrapper img { 
@@ -309,8 +326,8 @@
         </div>
         
         <div class="history-controls">
-            <button id="btnUndo" class="history-btn" disabled title="Ctrl + Z"><i class="fa-solid fa-rotate-left"></i> Undo</button>
-            <button id="btnRedo" class="history-btn" disabled title="Ctrl + Y"><i class="fa-solid fa-rotate-right"></i> Redo</button>
+            <button id="btnUndo" class="history-btn" disabled title="Ctrl + Z"><i class="fa-solid fa-rotate-left"></i> Undo (પાછળ)</button>
+            <button id="btnRedo" class="history-btn" disabled title="Ctrl + Y"><i class="fa-solid fa-rotate-right"></i> Redo (આગળ)</button>
         </div>
 
         <div class="color-picker-wrapper">
@@ -553,7 +570,6 @@
     const btnUndo = document.getElementById('btnUndo');
     const btnRedo = document.getElementById('btnRedo');
 
-    // Function to save current state to history
     function saveState() {
         const state = {
             blob: currentBlob,
@@ -566,7 +582,6 @@
             contrast: document.getElementById('contrast').value
         };
         
-        // Remove future states if we are not at the end of the array
         if (currentIndex < historyState.length - 1) {
             historyState = historyState.slice(0, currentIndex + 1);
         }
@@ -594,7 +609,7 @@
         document.getElementById('contrast').value = state.contrast;
         
         updateSlidVals();
-        updateStyles(false); // Update without saving a new state
+        updateStyles(false); 
         updateHistoryButtons();
     }
 
@@ -612,7 +627,6 @@
         }
     };
 
-    // Keyboard Shortcuts for Undo/Redo
     document.addEventListener('keydown', function(event) {
         if (event.ctrlKey && event.key === 'z') {
             event.preventDefault();
@@ -633,9 +647,8 @@
         document.getElementById(id).oninput = () => { updateSlidVals(); updateStyles(true); };
     });
 
-    // We only want to save state on 'change' (when user finishes interacting), not 'input' (every millisecond) for color/sliders to avoid history bloat.
     document.getElementById('pickColor').onchange = () => { updateStyles(true); };
-    document.getElementById('pickColor').oninput = () => { updateStyles(false); }; // Live preview, no save
+    document.getElementById('pickColor').oninput = () => { updateStyles(false); }; 
     
     ['borderR', 'bright', 'contrast'].forEach(id => {
         document.getElementById(id).onchange = () => { saveState(); };
@@ -694,7 +707,6 @@
         cropper = new Cropper(document.getElementById('cropImg'), { aspectRatio: 3.5 / 4.5, viewMode: 1 });
     }
 
-    // FHD CROP RESOLUTION (900x1157)
     document.getElementById('btnActionCrop').onclick = () => {
         if(!cropper) return alert("કૃપા કરીને પહેલા ફોટો અપલોડ કરો.");
         cropper.getCroppedCanvas({ width: 900, height: 1157, imageSmoothingEnabled: true, imageSmoothingQuality: 'high' }).toBlob((blob) => {
@@ -704,7 +716,6 @@
             previewWrapper.style.backgroundColor = "transparent";
             document.getElementById('cropBox').style.display = "none";
             
-            // Initial state save after first crop
             historyState = [];
             currentIndex = -1;
             updateStyles(true); 
@@ -731,7 +742,7 @@
                 currentBlob = resultBlob; currentImg = URL.createObjectURL(resultBlob); previewImage.src = currentImg;
                 document.getElementById('loadingText').innerHTML = "<i class='fa-solid fa-check'></i> 100% કટિંગ સફળ!";
                 checkCredits(); 
-                updateStyles(true); // Save state after BG removal
+                updateStyles(true); 
             } else {
                 const errorData = await response.json();
                 let errorMsg = response.statusText;
@@ -759,7 +770,7 @@
                     currentBlob = blob; currentImg = URL.createObjectURL(blob); previewImage.src = currentImg;
                     document.getElementById('statusOverlay').style.display = "none";
                     document.getElementById('filterSharpen').checked = true; 
-                    updateStyles(true); // Save state after enhance
+                    updateStyles(true); 
                 }, 'image/jpeg', 1.0);
             };
             img.src = currentImg;
@@ -790,7 +801,6 @@
         area.className = paperType === '4x6' ? 'paper-4x6-layout' : 'paper-a4-layout';
         document.body.className = paperType === '4x6' ? 'printing-4x6' : 'printing-a4';
         
-        // Render crisp images for print
         for (let i = 0; i < count; i++) {
             const clone = previewWrapper.cloneNode(true);
             clone.id = ""; clone.style.margin = "0"; clone.style.width = "100%"; clone.style.height = "100%";
@@ -816,7 +826,7 @@
         const img = new Image();
         img.onload = () => {
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const bw = parseInt(document.getElementById('borderR').value) * 6.5; // Scale border thickness
+            const bw = parseInt(document.getElementById('borderR').value) * 6.5; 
             if (bw > 0) { ctx.filter = 'none'; ctx.lineWidth = bw; ctx.strokeStyle = 'black'; ctx.strokeRect(bw/2, bw/2, canvas.width - bw, canvas.height - bw); }
             const link = document.createElement('a'); 
             link.download = `Al_Aksha_Passport_${Date.now()}.jpg`; 
